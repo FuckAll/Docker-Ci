@@ -8,4 +8,4 @@ else
     git pull
 fi
 
-docker run -it --rm --net=ci -v /var/run/docker.sock:/var/run/docker.sock -v app:/app -v $curDir/:/Ci  dockerci
+docker run -it --rm --net=ci -v /var/run/docker.sock:/var/run/docker.sock -v $curDir/:/Ci  dockerci
