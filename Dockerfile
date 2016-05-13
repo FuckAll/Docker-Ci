@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 ENV GLIBC_PKG_VERSION=2.23-r1
-RUN apk add --no-cache --update-cache bash curl ca-certificates make git go && \
+RUN apk add --no-cache --update-cache bash curl ca-certificates make git openssh go && \
   curl -Lo /etc/apk/keys/andyshinn.rsa.pub "https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_PKG_VERSION}/andyshinn.rsa.pub" && \
   curl -Lo glibc-${GLIBC_PKG_VERSION}.apk "https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_PKG_VERSION}/glibc-${GLIBC_PKG_VERSION}.apk" && \
   curl -Lo glibc-bin-${GLIBC_PKG_VERSION}.apk "https://github.com/andyshinn/alpine-pkg-glibc/releases/download/${GLIBC_PKG_VERSION}/glibc-bin-${GLIBC_PKG_VERSION}.apk" && \
@@ -20,4 +20,4 @@ ENV PATH $PATH:$GOROOT/bin:$GOBIN
 COPY golib.sh /
 RUN /golib.sh
 
-CMD["/bin/bash"]
+CMD ["/bin/bash"]
