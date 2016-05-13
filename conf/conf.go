@@ -2,11 +2,9 @@ package conf
 
 import (
     "flag"
-    "fmt"
     "encoding/json"
     
     "io/ioutil"
-    "github.com/pborman/uuid"
     "github.com/wothing/log"
 )
 
@@ -17,19 +15,17 @@ var (
 
 	REPO        string
 	ProjectPath string // This is a absolute PATH
-	SQLDir      string
+    Branch      string
 
 	DockerRegistryPosition string
 	REV                    string
 
-	PGImage string
-
-	RedisImage string
-
-	ConsulImage string
-
 	Services    []Service
 	ServicesRun []Service //TODO use
+    
+    CGO_ENABLED string
+    GOOS string
+    GOARCH string
 )
 
 var (
@@ -41,16 +37,13 @@ var (
 type Service struct {
 	Name string
 	Path string
-	Para string
+	Bin string
 }
 
 func init(){
     log.SetFlags(log.LstdFlags | log.Llevel)
     
     flag.Parse()
-    Tracer = uuid.New()[:8]
-    fmt.Println(Tracer)
-    
     data, err := ioutil.ReadFile("config.json")
     if err != nil{
         log.Tfatal(Tracer, "config.json unmarshal error: %v", err)
@@ -67,28 +60,23 @@ func init(){
     }()
     Concurrent = int(cm["Concurrent"].(float64))
 	REPO = cm["REPO"].(string)
+    Branch = cm["Branch"].(string)
 	ProjectPath = cm["ProjectPath"].(string) // This is a absolute PATH
-	SQLDir = cm["SQLDir"].(string)
-
+    
 	DockerRegistryPosition = cm["DockerRegistryPosition"].(string)
-
-	//REV = cm["REV"].(string)
-
-	PGImage = cm["PGImage"].(string)
-
-	RedisImage = cm["RedisImage"].(string)
-
-	ConsulImage = cm["ConsulImage"].(string)
-
+    CGO_ENABLED = cm["CGO_ENABLED"].(string)
+    GOOS = cm["GOOS"].(string)
+    GOARCH = cm["GOARCH"].(string)
 	services := cm["Services"].([]interface{})
 	for _, v := range services {
 		s := Service{
 			Name: v.(map[string]interface{})["Name"].(string),
 			Path: v.(map[string]interface{})["Path"].(string),
-			Para: v.(map[string]interface{})["Para"].(string),
+			Bin: v.(map[string]interface{})["Bin"].(string),
 		}
 		Services = append(Services, s)
 	}
 
 	log.Tinfo(Tracer, "load config.json succeed")
 }
+

@@ -1,137 +1,137 @@
 {
   "Concurrent": 4,
   "REPO": "git@github.com:wothing/17mei.git",
-  "ProjectPath": "/gopath/src/github.com/wothing/17mei",
-  "SQLDir": "sql",
+  "Branch":"wothing/develop",
+  "ProjectPath": "/Users/KongFu/17mei/src/github.com/wothing/17mei",
   "DockerRegistryPosition": "index.17mei.top",
-  "ConsulImage": "consul",
-  "PGImage": "postgres",
-  "RedisImage": "redis",
+  "CGO_ENABLED":"0",
+  "GOOS":"linux",
+  "GOARCH":"amd64",
   "Services": [
     {
       "Name": "story",
       "Path": "story",
-      "Para": "-ch [TRACER]-consul.test -cp 8600 -ss .service.dc1.consul -dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "story.exe"
     },
     {
       "Name": "verification",
       "Path": "verification",
-      "Para": "-rh [TRACER]-redis.test -rp 6379 -p 3000"
+      "Bin": "verification.exe"
     },
     {
       "Name": "activity",
       "Path": "activity",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "activity.exe"
     },
     {
       "Name": "push",
       "Path": "push",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "push.exe"
     },
     {
       "Name": "other",
       "Path": "other",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "other.exe"
     },
     {
       "Name": "mediastore",
       "Path": "mediastore",
-      "Para": "-env test -p 3000"
+      "Bin": "mediastore.exe"
     },
     {
       "Name": "user",
       "Path": "user",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "user.exe"
     },
     {
       "Name": "version",
       "Path": "version",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "version.exe"
     },
     {
       "Name": "statistic",
       "Path": "statistic",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "statistic.exe"
     },
     {
       "Name": "share",
       "Path": "share",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "share.exe"
     },
     {
       "Name": "wechat",
       "Path": "wechat",
-      "Para": "-appid wx5f6076d6fe66f16b -secret d4624c36b6795d1d99dcf0547af5443d -freq 7000 -p 3000"
+      "Bin": "wechat.exe"
     },
     {
       "Name": "consult",
       "Path": "consult",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "consult.exe"
     },
     {
       "Name": "authority",
       "Path": "authority",
-      "Para": "-ch [TRACER]-consul.test -cp 8600 -dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -ss .service.dc1.consul -p 3000"
+      "Bin": "authority.exe"
     },
     {
       "Name": "config",
       "Path": "config",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "config.exe"
     },
     {
       "Name": "message",
       "Path": "message",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "message.exe"
     },
     {
       "Name": "scm",
       "Path": "scm",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "scm.exe"
     },
     {
       "Name": "doctors",
       "Path": "doctors",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "doctors.exe"
     },
     {
       "Name": "hospital",
       "Path": "hospital",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "doctors.exe"
     },
     {
       "Name": "order",
       "Path": "order",
-      "Para": "-ch [TRACER]-consul.test -cp 8600 -ss .service.dc1.consul -dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "order.exe"
     },
     {
       "Name": "confidant",
       "Path": "confidant",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "confidant.exe"
     },
     {
       "Name": "goods",
       "Path": "goods",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "goods.exe"
     },
     {
       "Name": "account",
       "Path": "account",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "account.exe"
     },
     {
       "Name": "banner",
       "Path": "banner",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Bin": "banner.exe"
     },
     {
       "Name": "appway",
       "Path": "gateway/appway",
-      "Para": "-rh [TRACER]-redis.test -rp 6379 -ch [TRACER]-consul.test -cp 8600 -ss .service.dc1.consul -p 3000"
+      "Bin": "appway.exe"
     },
     {
       "Name": "interway",
       "Path": "gateway/interway",
-      "Para": "-ch [TRACER]-consul.test -cp 8600 -ss .service.dc1.consul -p 3000"
+      "Bin": "interway.exe"
     }
   ]
 }

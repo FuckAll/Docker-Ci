@@ -7,34 +7,10 @@
 
 package main
 
-import (
-    "fmt"
-    "sync"
-    "github.com/FuckAll/Docker-Ci/ci"
-    "github.com/FuckAll/Docker-Ci/conf"
-)
+import "github.com/FuckAll/Docker-Ci/ci"
 
-// var waitGroup = &sync.WaitGroup{}
-// var goroutine = func(stageFunc func()){
-    // defer waitGroup.Done()
-    // stageFunc()
-// }
+func main() {
+	ci.AppBuild()
+	ci.DockerImageBuild()
 
-func main(){
-    ci.AppBuild()
-    // waitGroup.Add(1) // Add 3 task to goroutine sequence
-    // fmt.Println("wooooool")
-    // go goroutine(ci.Redis)
-    // waitGroup.Wait()
-    
-    //redis
-    //pgsql
-    //consul
-    
-    
-    //build
-    //images
-    //AppTest
-    //Clean()
-    
 }
