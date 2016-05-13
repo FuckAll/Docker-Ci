@@ -23,7 +23,7 @@ import (
 
 // DBStage main entry point of this module
 func Pgsql() {
-	CMD(FMT("docker run -it -d --net=ci --name %s-pgsql -e POSTGRES_DB=meidb -e POSTGRES_PASSWORD=wothing %s", conf.Tracer, conf.PGImage))
+	CMD(FMT("docker run -it -d --net=test --name %s-pgsql -e POSTGRES_DB=meidb -e POSTGRES_PASSWORD=wothing %s", conf.Tracer, conf.PGImage))
 	pgInit(filewalk.WalkDir(conf.ProjectPath+"/"+conf.SQLDir, "sql").FileList()...)
 }
 

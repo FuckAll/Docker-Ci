@@ -13,5 +13,5 @@ import (
 )
 
 func Redis() {
-	CMD(FMT("docker run -ti -d --net=ci --name %s-redis %s", conf.Tracer, conf.RedisImage))
+	CMD(FMT("docker run -ti -d --net=test --name %s-redis %s", conf.Tracer, conf.RedisImage))
 }
