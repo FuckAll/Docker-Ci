@@ -8,7 +8,7 @@
 package ci
 
 import (
-    "fmt"
+	"fmt"
 	"sync"
 
 	"github.com/wothing/log"
@@ -19,7 +19,7 @@ import (
 
 func AppBuild() {
 	GitPull()
-    fmt.Println(conf.Tracer)
+	fmt.Println(conf.Tracer)
 	CMD("make -C " + conf.ProjectPath + " idl")
 
 	jobCount := len(conf.Services)
@@ -34,7 +34,8 @@ func AppBuild() {
 
 	//add jobs
 	for _, s := range conf.Services {
-		jobs <- FMT("cd %s/%s && CGO_ENABLED=%s GOARCH=%s GOOS=%s go build -o %s", conf.ProjectPath, s.Path, conf.CGO_ENABLED, conf.GOARCH, conf.GOOS, s.Bin)
+		//jobs <- FMT("cd %s/%s && CGO_ENABLED=%s GOARCH=%s GOOS=%s go build -o %s", conf.ProjectPath, s.Path, conf.CGO_ENABLED, conf.GOARCH, conf.GOOS, s.Bin)
+		fmt.Println(s)
 	}
 
 	wg.Wait()

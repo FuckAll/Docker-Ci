@@ -1,82 +1,103 @@
+/**
+ * Copyright 2015-2016, Wothing Co., Ltd.
+ * All rights reserved.
+ *
+ * Created by izgnod on 2016/05/13 17:11
+ */
+
 package conf
 
 import (
-    "flag"
-    "encoding/json"
-    
-    "io/ioutil"
-    "github.com/wothing/log"
+	"encoding/json"
+	"flag"
+	"io/ioutil"
+
+	"github.com/pborman/uuid"
+	"github.com/wothing/log"
 )
 
 var (
-    Tracer string
+	Tracer string
 
 	Concurrent int
 
 	REPO        string
 	ProjectPath string // This is a absolute PATH
-    Branch      string
+	SQLDir      string
 
 	DockerRegistryPosition string
 	REV                    string
 
+	PGImage string
+
+	RedisImage string
+
+	ConsulImage string
+
 	Services    []Service
-	ServicesRun []Service //TODO use
-    
-    CGO_ENABLED string
-    GOOS string
-    GOARCH string
+	ServicesRun []Service //TODO use?
 )
 
 var (
-    Push  = flag.Bool("p", false, "Push image to Registry")
-    BuildList  = flag.String("b", "all", "Building list such as: appway, interway..... split by ,")
-    TestOnly = flag.Bool("t", false, "after build")
+	Push          bool   //= flag.Bool("push", false, "show build version")
+	BuildList     string //= flag.String("b", "all", "building list such as : appway,interway,user split by ,")
+	DependanceTag string //= flag.String("depend", "latest", "Detected modes not build docker image tag")
+	TestOnly      bool   //= flag.Bool("t", false, "after build and run collect garbage container")
 )
 
 type Service struct {
 	Name string
 	Path string
-	Bin string
+	Para string
 }
 
-func init(){
-    log.SetFlags(log.LstdFlags | log.Llevel)
-    
-    flag.Parse()
-    data, err := ioutil.ReadFile("config.json")
-    if err != nil{
-        log.Tfatal(Tracer, "config.json unmarshal error: %v", err)
-    }
-    cm := make(map[string]interface{})
-    err = json.Unmarshal(data, &cm)
-    if err != nil{
-       log.Tfatalf(Tracer, "config.json unmarshal error: %v", err) 
-    }
-    defer func(){
-        if r:= recover(); r!=nil{
-            log.Tfatal(Tracer, "config.json file illegal --> %v", r)
-        }
-    }()
-    Concurrent = int(cm["Concurrent"].(float64))
+func init() {
+	log.SetFlags(log.LstdFlags | log.Llevel)
+
+	flag.Parse()
+	Tracer = uuid.New()[:8]
+
+	data, err := ioutil.ReadFile("woci.json")
+	if err != nil {
+		log.Tfatalf(Tracer, "read woci.json error: %v", err)
+	}
+
+	cm := make(map[string]interface{})
+	err = json.Unmarshal(data, &cm)
+	if err != nil {
+		log.Tfatalf(Tracer, "woci.json unmarshal error: %v", err)
+	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			log.Tfatalf(Tracer, "woci.json file illegal--> %v", r)
+		}
+	}()
+
+	Concurrent = int(cm["Concurrent"].(float64))
 	REPO = cm["REPO"].(string)
-    Branch = cm["Branch"].(string)
 	ProjectPath = cm["ProjectPath"].(string) // This is a absolute PATH
-    
+	SQLDir = cm["SQLDir"].(string)
+
 	DockerRegistryPosition = cm["DockerRegistryPosition"].(string)
-    CGO_ENABLED = cm["CGO_ENABLED"].(string)
-    GOOS = cm["GOOS"].(string)
-    GOARCH = cm["GOARCH"].(string)
+
+	//REV = cm["REV"].(string)
+
+	PGImage = cm["PGImage"].(string)
+
+	RedisImage = cm["RedisImage"].(string)
+
+	ConsulImage = cm["ConsulImage"].(string)
+
 	services := cm["Services"].([]interface{})
 	for _, v := range services {
 		s := Service{
 			Name: v.(map[string]interface{})["Name"].(string),
 			Path: v.(map[string]interface{})["Path"].(string),
-			Bin: v.(map[string]interface{})["Bin"].(string),
+			Para: v.(map[string]interface{})["Para"].(string),
 		}
 		Services = append(Services, s)
 	}
 
-	log.Tinfo(Tracer, "load config.json succeed")
+	log.Tinfo(Tracer, "load woci.json succeed")
 }
-
