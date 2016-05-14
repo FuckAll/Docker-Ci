@@ -1,8 +1,8 @@
 [
   {
     "id": "pull_request",
-    "execute-command": "/root/dongzai/test.sh",
-    "command-working-directory": "/root/dongzai/",
+    "execute-command": "/app/Docker-Ci",
+    "command-working-directory": "/ci/",
     "pass-arguments-to-command":
     [
       {
