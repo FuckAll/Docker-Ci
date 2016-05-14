@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"flag"
 	"io/ioutil"
+	"os"
 
 	"github.com/pborman/uuid"
 	"github.com/wothing/log"
@@ -56,7 +57,11 @@ func init() {
 
 	flag.Parse()
 	Tracer = uuid.New()[:8]
-
+	logfile = "/log/" + Tracer + ".log"
+	f, err := os.OpenFile(logfile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 066)
+	if err != nil {
+		panic(err)
+	}
 	data, err := ioutil.ReadFile("woci.json")
 	if err != nil {
 		log.Tfatalf(Tracer, "read woci.json error: %v", err)
