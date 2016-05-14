@@ -58,7 +58,7 @@ func init() {
 	flag.Parse()
 	Tracer = uuid.New()[:8]
 	logfile := "/log/" + Tracer + ".log"
-	f, err := os.OpenFile(logfile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 066)
+	_, err := os.OpenFile(logfile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 066)
 	if err != nil {
 		panic(err)
 	}
