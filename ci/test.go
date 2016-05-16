@@ -14,5 +14,5 @@ import (
 
 func AppTest() {
 	CMD(FMT("CGO_ENABLED=0 go test -c -o /app/testbin %s/gateway/tests/*.go", conf.ProjectPath))
-	CMD(FMT("TestEnv=CI CiTracer=%s /app/testbin -test.v >> /log/%s.log", conf.Tracer, conf.Tracer))
+	CMD(FMT("TestEnv=CI CiTracer=%s /app/testbin -test.v ", conf.Tracer))
 }

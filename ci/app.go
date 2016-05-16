@@ -32,7 +32,7 @@ func AppBuild() {
 
 	//add jobs
 	for _, s := range conf.Services {
-		jobs <- FMT("cd %s/%s && CGO_ENABLED=0 go install >> /log/%s.log", conf.ProjectPath, s.Path, conf.Tracer)
+		jobs <- FMT("cd %s/%s && CGO_ENABLED=0 go install", conf.ProjectPath, s.Path)
 	}
 
 	wg.Wait()
@@ -50,7 +50,7 @@ func builder(wg *sync.WaitGroup, jobs <-chan string) {
 
 func appDocker() {
 	for _, s := range conf.Services {
-		v := FMT("docker run -it -d --net=test -v app:/app -v log:/log/ --name %s-%s alpine /app/%s %s >> /log/%s.log", conf.Tracer, s.Name, s.Name, s.Para, conf.Tracer)
+		v := FMT("docker run -it -d --net=test -v app:/app -v log:/log/ --name %s-%s alpine /app/%s %s", conf.Tracer, s.Name, s.Name, s.Para)
 		v = strings.Replace(v, "[TRACER]", conf.Tracer, -1)
 		CMD(v)
 	}
