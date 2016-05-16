@@ -116,7 +116,7 @@
     {
       "Name": "account",
       "Path": "account",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
+      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -ch [TRACER]-consul.test -cp 8600 -ss .service.dc1.consul -p 3000"
     },
     {
       "Name": "banner",
