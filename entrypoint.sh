@@ -1,7 +1,7 @@
 #!/bin/bash
-appDir=/app/
-ciDir=/ci/
-logDir=/log/
+appDir=/app
+ciDir=/ci
+logDir=/log
 
 ###### start buildlog #####
 

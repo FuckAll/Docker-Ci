@@ -21,4 +21,4 @@ git pull $1 develop
 
 //Ci 全部的代码
 pushd $Ci_DIR
-/app/Docker-Ci 
+/app/Docker-Ci > /log/ci.log
