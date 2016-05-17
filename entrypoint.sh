@@ -6,7 +6,7 @@ logDir=/log
 ###### start buildlog #####
 
 pushd /
-$appDir/buildlog.exe &
+/buildlog.exe &
 
 
 ##### start webhook ######
