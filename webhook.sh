@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WORK_DIR=/root/dongzai/17mei/
+WORK_DIR=/gopath/src/github.com/wothing/17mei
 Ci_DIR=/ci/
 
 [ $1 ] || exit 1

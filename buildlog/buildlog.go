@@ -7,19 +7,19 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
+	//"strings"
 )
 
 func showLog(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	var filename string
-	for k, v := range r.Form {
-		if k != "id" {
-			http.NotFound(w, r)
-		} else {
-			filename = "/log/" + strings.Join(v, "") + ".log"
-		}
-	}
+	filename := "/log/ci.log"
+	//for k, v := range r.Form {
+	//if k != "id" {
+	//http.NotFound(w, r)
+	//} else {
+	//filename = "/log/" + strings.Join(v, "") + ".log"
+	//}
+	//}
 	f, err := os.Open(filename)
 	defer f.Close()
 	if err != nil {
