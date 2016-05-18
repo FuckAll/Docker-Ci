@@ -14,7 +14,7 @@ import (
 var client = &http.Client{}
 
 func Consul() {
-	CMD(FMT("docker run -it -d --net=test -v log:/log --name %s-consul %s agent -dev -bind=0.0.0.0 -client=0.0.0.0", conf.Tracer, conf.ConsulImage))
+	CMD(FMT("docker run -it -d --net=test --name %s-consul %s agent -dev -bind=0.0.0.0 -client=0.0.0.0", conf.Tracer, conf.ConsulImage))
 
 	for i := 0; ; i++ {
 		if i > 30 {

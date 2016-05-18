@@ -50,7 +50,7 @@ func builder(wg *sync.WaitGroup, jobs <-chan string) {
 
 func appDocker() {
 	for _, s := range conf.Services {
-		v := FMT("docker run -it -d --net=test -v app:/app -v log:/log/ --name %s-%s alpine /app/%s %s", conf.Tracer, s.Name, s.Name, s.Para)
+		v := FMT("docker run -it -d --net=test -v app:/app -v --name %s-%s alpine /app/%s %s", conf.Tracer, s.Name, s.Name, s.Para)
 		v = strings.Replace(v, "[TRACER]", conf.Tracer, -1)
 		CMD(v)
 	}
