@@ -1,8 +1,8 @@
 [
   {
     "id": "pull_request",
-    "execute-command": "/app/Docker-Ci",
-    "command-working-directory": "/ci/",
+    "execute-command": "/app/Docker-Ci > /log/ci.log",
+    "command-working-directory": "/",
     "pass-arguments-to-command":
     [
       {
