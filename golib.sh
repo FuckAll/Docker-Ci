@@ -26,6 +26,7 @@ go get -u github.com/smartystreets/assertions
 go get -u github.com/smartystreets/goconvey
 
 go get -u github.com/bitly/go-simplejson
+go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 
 go get -u github.com/FuckAll/Docker-Ci
 go get -u github.com/adnanh/webhook
