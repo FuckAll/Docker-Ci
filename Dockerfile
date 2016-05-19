@@ -15,7 +15,8 @@ ENV PATH $PATH:$GOROOT/bin:$GOBIN
 
 
 # go get -u
-COPY golib.sh /
+COPY golib.sh 
+COPY protoc /app/
 RUN /golib.sh
 
 CMD ["/bin/bash"]
