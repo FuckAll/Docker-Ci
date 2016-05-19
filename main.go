@@ -14,7 +14,7 @@ import (
 	_ "github.com/FuckAll/Docker-Ci/conf"
 )
 
-type StageFunc func()
+type StageFunc func() error
 
 var wg = &sync.WaitGroup{}
 var gofunc = func(foo StageFunc) {
@@ -28,8 +28,12 @@ func main() {
 	go gofunc(ci.Pgsql)
 	go gofunc(ci.Consul)
 	wg.Wait()
-
-	ci.AppBuild()
-	ci.AppTest()
+	var err error
+	if err = ci.AppBuild(); err != nil {
+		ci.Clean()
+	}
+	if err = ci.AppTest(); err != nil {
+		ci.Clean()
+	}
 	ci.Clean()
 }

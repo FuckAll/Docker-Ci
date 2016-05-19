@@ -9,6 +9,7 @@ package ci
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"time"
@@ -22,22 +23,28 @@ import (
 )
 
 // DBStage main entry point of this module
-func Pgsql() {
+func Pgsql() error {
 	CMD(FMT("docker run -it -d --net=test --name %s-pgsql -e POSTGRES_DB=meidb -e POSTGRES_PASSWORD=wothing %s", conf.Tracer, conf.PGImage))
-	pgInit(filewalk.WalkDir(conf.ProjectPath+"/"+conf.SQLDir, "sql").FileList()...)
+	err := pgInit(filewalk.WalkDir(conf.ProjectPath+"/"+conf.SQLDir, "sql").FileList()...)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func pgInit(files ...string) {
+func pgInit(files ...string) error {
 	dsn := FMT("postgres://postgres:wothing@%s-pgsql.test:5432/meidb?sslmode=disable", conf.Tracer)
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
-		log.Tfatalf(conf.Tracer, "error on connecting to db: %s", err)
+		log.Tinfof(conf.Tracer, "error on connecting to db: %s", err)
+		return err
 	}
 	defer db.Close()
 
 	for i := 0; ; i++ {
 		if i > 30 {
-			log.Tfatal("After for a long time we can't connection to database")
+			log.Info("After for a long time we can't connection to database")
+			return errors.New("After for a long time we can't connection to database")
 		}
 		if db.Ping() != nil {
 			log.Tinfof(conf.Tracer, "Try connection to database %d time(s)", i+1)
@@ -50,7 +57,8 @@ func pgInit(files ...string) {
 
 	_, err = db.Exec(`CREATE EXTENSION IF NOT EXISTS "pgcrypto"`)
 	if err != nil {
-		log.Fatal("sql error:", err)
+		log.Tinfo("sql error:", err)
+		return err
 	}
 
 	fmt.Println("sql list:", files)
@@ -58,11 +66,14 @@ func pgInit(files ...string) {
 	for _, f := range files {
 		sql, err := ioutil.ReadFile(f)
 		if err != nil {
-			log.Tfatalf(conf.Tracer, "reading sql file error : %s", f)
+			log.Tinfof(conf.Tracer, "reading sql file error : %s", f)
+			return err
 		}
 		_, err = db.Exec(string(sql))
 		if err != nil {
-			log.Fatal("sql error:", err)
+			log.Info("sql error:", err)
+			return err
 		}
 	}
+	return nil
 }

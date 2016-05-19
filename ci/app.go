@@ -17,8 +17,11 @@ import (
 	"github.com/FuckAll/Docker-Ci/conf"
 )
 
-func AppBuild() {
-	CMD("make -C " + conf.ProjectPath + " idl ve")
+func AppBuild() error {
+	_, err := CMD("make -C " + conf.ProjectPath + " idl ve")
+	if err != nil {
+		return err
+	}
 
 	jobCount := len(conf.Services)
 	jobs := make(chan string, jobCount)
@@ -38,20 +41,31 @@ func AppBuild() {
 	wg.Wait()
 	log.Tinfo(conf.Tracer, "All build job done")
 
-	appDocker()
+	if err = appDocker(); err != nil {
+		return err
+	}
+	return nil
 }
 
-func builder(wg *sync.WaitGroup, jobs <-chan string) {
+func builder(wg *sync.WaitGroup, jobs <-chan string) error {
 	for j := range jobs {
-		CMD(j)
+		_, err := CMD(j)
+		if err != nil {
+			return err
+		}
 		wg.Done()
 	}
+	return nil
 }
 
-func appDocker() {
+func appDocker() error {
 	for _, s := range conf.Services {
 		v := FMT("docker run -it -d --net=test -v app:/app -v --name %s-%s alpine /app/%s %s", conf.Tracer, s.Name, s.Name, s.Para)
 		v = strings.Replace(v, "[TRACER]", conf.Tracer, -1)
-		CMD(v)
+		_, err := CMD(v)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }

@@ -12,6 +12,10 @@ import (
 	"github.com/FuckAll/Docker-Ci/conf"
 )
 
-func Redis() {
-	CMD(FMT("docker run -ti -d --net=test -v  --name %s-redis %s", conf.Tracer, conf.RedisImage))
+func Redis() error {
+	_, err := CMD(FMT("docker run -ti -d --net=test -v  --name %s-redis %s", conf.Tracer, conf.RedisImage))
+	if err != nil {
+		return err
+	}
+	return nil
 }

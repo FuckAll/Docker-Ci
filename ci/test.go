@@ -12,7 +12,14 @@ import (
 	"github.com/FuckAll/Docker-Ci/conf"
 )
 
-func AppTest() {
-	CMD(FMT("CGO_ENABLED=0 go test -c -o /app/testbin %s/gateway/tests/*.go", conf.ProjectPath))
-	CMD(FMT("TestEnv=CI CiTracer=%s /app/testbin -test.v ", conf.Tracer))
+func AppTest() error {
+	_, err := CMD(FMT("CGO_ENABLED=0 go test -c -o /app/testbin %s/gateway/tests/*.go", conf.ProjectPath))
+	if err != nil {
+		return err
+	}
+	_, err = CMD(FMT("TestEnv=CI CiTracer=%s /app/testbin -test.v ", conf.Tracer))
+	if err != nil {
+		return err
+	}
+	return nil
 }

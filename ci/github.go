@@ -1,5 +1,6 @@
-//package github
-package main
+package ci
+
+//package main
 
 import (
 	"fmt"

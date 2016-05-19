@@ -2,6 +2,7 @@ package ci
 
 import (
 	"bytes"
+	"errors"
 	"net/http"
 	"time"
 
@@ -13,12 +14,15 @@ import (
 
 var client = &http.Client{}
 
-func Consul() {
-	CMD(FMT("docker run -it -d --net=test --name %s-consul %s agent -dev -bind=0.0.0.0 -client=0.0.0.0", conf.Tracer, conf.ConsulImage))
+func Consul() error {
+	_, err := CMD(FMT("docker run -it -d --net=test --name %s-consul %s agent -dev -bind=0.0.0.0 -client=0.0.0.0", conf.Tracer, conf.ConsulImage))
+	if err != nil {
+		Clean()
+	}
 
 	for i := 0; ; i++ {
 		if i > 30 {
-			log.Tfatal("After for a long time we can't connection to consul")
+			log.Infof("After for a long time we can't connection to consul")
 		}
 
 		if consulCheck() {
@@ -32,6 +36,7 @@ func Consul() {
 			time.Sleep(time.Second)
 		}
 	}
+	return nil
 }
 
 func consulCheck() bool {
@@ -49,7 +54,7 @@ func consulCheck() bool {
 	}
 }
 
-func consulRegister(Name, Address string) {
+func consulRegister(Name, Address string) error {
 	url := "http://" + conf.Tracer + "-consul.test:8500/v1/agent/service/register"
 
 	var jsonStr = []byte(`{"Name":"` + Name + `", "Port": 3000, "Address":"` + Address + `" }`)
@@ -57,10 +62,12 @@ func consulRegister(Name, Address string) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.Status != "200 OK" {
-		log.Tfatalf(conf.Tracer, "REG service error %s %s", Name, Address)
+		log.Tinfof(conf.Tracer, "REG service error %s %s", Name, Address)
+		return errors.New("REG service error")
 	}
+	return nil
 }

@@ -11,11 +11,12 @@ import (
 
 var FMT = fmt.Sprintf
 
-func CMD(order string) string {
+func CMD(order string) (string, error) {
 	log.Tinfof(conf.Tracer, "CMD: %s", order)
 	// cmd := exec.Command("/usr/bin/script", "-f", "-e", "-q", "-c", order, "ci.log")
 	// cmd := exec.Command("/usr/bin/script ", order)
 	cmd := exec.Command("sh")
+
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 
@@ -24,10 +25,12 @@ func CMD(order string) string {
 
 	in := bytes.NewBuffer(nil)
 	cmd.Stdin = in
+
 	in.WriteString(order)
 	err := cmd.Run()
 	if err != nil {
-		log.Tfatalf(conf.Tracer, "%s --> %s, CMD STDERR --> %s\n", order, err.Error(), stderr.String())
+		log.Infof(conf.Tracer, "%s --> %s, CMD STDERR --> %s\n", order, err.Error(), stderr.String())
+		return stderr.String(), err
 	}
-	return stdout.String()
+	return stdout.String(), nil
 }
