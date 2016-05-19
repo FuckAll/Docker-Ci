@@ -84,11 +84,6 @@
       "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
     },
     {
-      "Name": "scm",
-      "Path": "scm",
-      "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
-    },
-    {
       "Name": "doctors",
       "Path": "doctors",
       "Para": "-dh [TRACER]-pgsql.test -dn meidb -dp 5432 -dpwd wothing -du postgres -p 3000"
