@@ -1,4 +1,4 @@
-package dockerapi
+package api
 
 import (
 	"bytes"
@@ -51,13 +51,16 @@ func RemoveImage(name string) error {
 	return nil
 }
 
-func BuildImage(Name, Remote string, NoCache bool) error {
+func BuildImage(Name, Dockerfile, ContextDir string, Pull, NoCache, ForceRmTmpContainer bool) error {
 	var buf bytes.Buffer
 	opts := docker.BuildImageOptions{
-		Name:           Name,
-		Remote:         Remote,
-		SuppressOutput: true,
-		OutputStream:   &buf,
+		Name:                Name,
+		Dockerfile:          Dockerfile,
+		OutputStream:        &buf,
+		ContextDir:          ContextDir,
+		Pull:                Pull,    // Attempt to pull the image even if an older image exists locally.
+		NoCache:             NoCache, // Do not use the cache when building the image.
+		ForceRmTmpContainer: ForceRmTmpContainer,
 	}
 	err := client.BuildImage(opts)
 	if err != nil {
