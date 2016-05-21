@@ -5,17 +5,12 @@ import (
 	"github.com/fsouza/go-dockerclient"
 )
 
-func ListNetwork() error {
+func ListNetwork() ([]docker.Network, error) {
 	networks, err := client.ListNetworks()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	//for _, id := range networks {
-	//fmt.Println(id.ID)
-	//fmt.Println(id.Containers)
-	//}
-	fmt.Println(networks)
-	return nil
+	return networks, nil
 
 }
 
@@ -38,4 +33,18 @@ func ConnectNetwork(Id string) error {
 		return err
 	}
 	return nil
+}
+
+func NetworkExist(Name string) bool {
+	networks, err := ListNetwork()
+	if err != nil {
+		fmt.Println("NetworkExist Error")
+		return false
+	}
+	for _, net := range networks {
+		if net.Name == Name {
+			return true
+		}
+	}
+	return false
 }

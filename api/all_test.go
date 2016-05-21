@@ -53,25 +53,42 @@ var Id string
 //}
 
 //Create Network
-//func TestCreateNetwork(t *testing.T) {
-//name, err := CreateNetwork("test")
-//if err != nil {
-//fmt.Println("TestCreateNetwork Error")
-//fmt.Println(err)
-//}
-//fmt.Println("CreateNetwork Name:", name)
-//}
+func TestCreateNetwork(t *testing.T) {
+	if fi := NetworkExist("test"); !fi {
+		name, err := CreateNetwork("test")
+		if err != nil {
+			fmt.Println("TestCreateNetwork Error")
+			fmt.Println(err)
+		}
+		fmt.Println("CreateNetwork Name:", name)
+	} else {
+		fmt.Println("CreateNetwork Complate")
+	}
+}
+
+// Network Exist
+func TestNetworkExist(t *testing.T) {
+	fi := NetworkExist("test")
+	if !fi {
+		fmt.Println("TestNetworkExist Error")
+		fmt.Println(fi)
+	} else {
+		fmt.Println("TestNetworkExist Complate")
+
+	}
+
+}
 
 // Create Container
-func TestCreateContainer(t *testing.T) {
-	var err error
-	Id, err = CreateContainer("test", "test")
-	if err != nil {
-		fmt.Println("TestCreateContainer Error")
-		fmt.Println(err)
-	}
-	fmt.Println("CreateContainer ID:", Id)
-}
+//func TestCreateContainer(t *testing.T) {
+//var err error
+//Id, err = CreateContainer("test", "test")
+//if err != nil {
+//fmt.Println("TestCreateContainer Error")
+//fmt.Println(err)
+//}
+//fmt.Println("CreateContainer ID:", Id)
+//}
 
 // ConnectNetWork
 //func TestConnectNetwork(t *testing.T) {
@@ -85,11 +102,11 @@ func TestCreateContainer(t *testing.T) {
 //}
 
 // StartContainer
-func TestStartContainer(t *testing.T) {
-	err := StartContainer(Id)
-	if err != nil {
-		fmt.Println("TestStartContainer Error")
-		fmt.Println(err)
-	}
-	fmt.Println("StartContainer ID:", Id)
-}
+//func TestStartContainer(t *testing.T) {
+//err := StartContainer(Id, "test")
+//if err != nil {
+//fmt.Println("TestStartContainer Error")
+//fmt.Println(err)
+//}
+//fmt.Println("StartContainer ID:", Id)
+//}

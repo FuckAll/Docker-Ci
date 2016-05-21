@@ -20,9 +20,9 @@ func CreateContainer(Name, Image string) (string, error) {
 	return container.ID, nil
 }
 
-func StartContainer(Id string) error {
+func StartContainer(Id, NetworkMode string) error {
 	hostConfig := docker.HostConfig{
-		NetworkMode: "test",
+		NetworkMode: NetworkMode,
 	}
 	err := client.StartContainer(Id, &hostConfig)
 	if err != nil {
