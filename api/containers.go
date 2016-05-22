@@ -30,3 +30,24 @@ func StartContainer(Id, NetworkMode string) error {
 	}
 	return nil
 }
+
+func StopContainer(id string, timeout uint) error {
+	err := client.StopContainer(id, timeout)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func RemoveContainer(id string, RemoveVolumes bool) error {
+	opts := docker.RemoveContainerOptions{
+		ID:            id,
+		RemoveVolumes: RemoveVolumes,
+	}
+	err := client.RemoveContainer(opts)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
