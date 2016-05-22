@@ -3,9 +3,11 @@ package api
 import (
 	"fmt"
 	"testing"
+	//	"github.com/fsouza/go-dockerclient"
 )
 
 var Id string
+var VolumeName string
 
 // List Image
 //func TestListImage(t *testing.T) {
@@ -53,36 +55,36 @@ var Id string
 //}
 
 //Create Network
-func TestCreateNetwork(t *testing.T) {
-	if fi := NetworkExist("test"); !fi {
-		name, err := CreateNetwork("test")
-		if err != nil {
-			fmt.Println("TestCreateNetwork Error")
-			fmt.Println(err)
-		}
-		fmt.Println("CreateNetwork Name:", name)
-	} else {
-		fmt.Println("CreateNetwork Complate")
-	}
-}
+//func TestCreateNetwork(t *testing.T) {
+//if fi := NetworkExist("test"); !fi {
+//name, err := CreateNetwork("test")
+//if err != nil {
+//fmt.Println("TestCreateNetwork Error")
+//fmt.Println(err)
+//}
+//fmt.Println("CreateNetwork Name:", name)
+//} else {
+//fmt.Println("CreateNetwork Complate")
+//}
+//}
 
 // Network Exist
-func TestNetworkExist(t *testing.T) {
-	fi := NetworkExist("test")
-	if !fi {
-		fmt.Println("TestNetworkExist Error")
-		fmt.Println(fi)
-	} else {
-		fmt.Println("TestNetworkExist Complate")
+//func TestNetworkExist(t *testing.T) {
+//fi := NetworkExist("test")
+//if !fi {
+//fmt.Println("TestNetworkExist Error")
+//fmt.Println(fi)
+//} else {
+//fmt.Println("TestNetworkExist Complate")
 
-	}
+//}
 
-}
+//}
 
 // Create Container
 func TestCreateContainer(t *testing.T) {
 	var err error
-	Id, err = CreateContainer("test", "test")
+	Id, err = CreateContainer("test", "test", []string{"app:/test"})
 	if err != nil {
 		fmt.Println("TestCreateContainer Error")
 		fmt.Println(err)
@@ -112,22 +114,64 @@ func TestStartContainer(t *testing.T) {
 }
 
 // Stop Container
-func TestStopContainer(t *testing.T) {
-	err := StopContainer(Id, 0)
-	if err != nil {
-		fmt.Println("TestStopContainer Error")
-		fmt.Println(err)
-	}
-	fmt.Println("TestStopContainer ID:", Id)
-}
+//func TestStopContainer(t *testing.T) {
+//err := StopContainer(Id, 0)
+//if err != nil {
+//fmt.Println("TestStopContainer Error")
+//fmt.Println(err)
+//}
+//fmt.Println("TestStopContainer ID:", Id)
+//}
 
 //Remove Container
-func TestRemoveContainer(t *testing.T) {
-	err := RemoveContainer(Id, false)
-	if err != nil {
-		fmt.Println("TestRemoveContainer Error")
-		fmt.Println(err)
-	}
-	fmt.Println("TestRemoveContainer ID:", Id)
+//func TestRemoveContainer(t *testing.T) {
+//err := RemoveContainer(Id, false)
+//if err != nil {
+//fmt.Println("TestRemoveContainer Error")
+//fmt.Println(err)
+//}
+//fmt.Println("TestRemoveContainer ID:", Id)
 
-}
+//}
+
+// List Volume
+//func TestListVolumes(t *testing.T) {
+//Volume, err := ListVolumes(docker.ListVolumesOptions{})
+//if err != nil {
+//fmt.Println("TestListVolumes Error")
+//fmt.Println(err)
+//}
+//for _, v := range Volume {
+//fmt.Println("TestListVolumes:", v.Name)
+//}
+
+//}
+
+// Create Volume
+//func TestCreateVolume(t *testing.T) {
+//name, err := CreateVolume("test")
+//if err != nil {
+//fmt.Println("TestCreateVolume Error")
+//} else {
+//fmt.Println("TestCreateVolume Name:", name)
+//VolumeName = name
+//}
+
+//}
+
+// Remove Volum
+//func TestRemoveVolume(t *testing.T) {
+//err := RemoveVolume(VolumeName)
+//if err != nil {
+//fmt.Println("TestRemoveVolume Error")
+//} else {
+//fmt.Println("TestRemoveVolume Complate")
+//}
+
+//}
+
+// Volume Exist
+//func TestVolumeExist(t *testing.T) {
+//bl := VolumeExist("test")
+//fmt.Println(bl)
+//}

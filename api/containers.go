@@ -4,14 +4,18 @@ import (
 	"github.com/fsouza/go-dockerclient"
 )
 
-func CreateContainer(Name, Image string) (string, error) {
+func CreateContainer(Name, Image string, Volumes []string) (string, error) {
 	configs := docker.Config{
 		Image: Image,
 		Tty:   true,
 	}
+	hostconfigs := docker.HostConfig{
+		Binds: Volumes,
+	}
 	opts := docker.CreateContainerOptions{
-		Name:   Name,
-		Config: &configs,
+		Name:       Name,
+		Config:     &configs,
+		HostConfig: &hostconfigs,
 	}
 	container, err := client.CreateContainer(opts)
 	if err != nil {
