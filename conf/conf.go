@@ -9,9 +9,8 @@ package conf
 
 import (
 	"encoding/json"
-	"flag"
+	"fmt"
 	"io/ioutil"
-	"os"
 
 	"github.com/pborman/uuid"
 	"github.com/wothing/log"
@@ -19,90 +18,64 @@ import (
 
 var (
 	Tracer string
-
-	Concurrent int
-
-	REPO        string
-	ProjectPath string // This is a absolute PATH
-	SQLDir      string
-
-	DockerRegistryPosition string
-	REV                    string
-
-	PGImage string
-
-	RedisImage string
-
-	ConsulImage string
-
-	Services    []Service
-	ServicesRun []Service //TODO use?
 )
 
-var (
-	Push          bool   //= flag.Bool("push", false, "show build version")
-	BuildList     string //= flag.String("b", "all", "building list such as : appway,interway,user split by ,")
-	DependanceTag string //= flag.String("depend", "latest", "Detected modes not build docker image tag")
-	TestOnly      bool   //= flag.Bool("t", false, "after build and run collect garbage container")
-)
+var dockerCi DockerCi
+
+type DockerCi struct {
+	ProjectPath    string                 // This is a absolute PATH
+	DockerApi      string                 //Docker Api Default "tcp://127.0.0.1:2375"
+	Bridge         string                 //Docker Bridge Default bridge
+	ServicesImage  string                 // Service Base image for example: alpine:latest
+	Infrastructure map[string]interface{} // Base Infrastructure for example: pgsql redis consul
+	Services       []Service
+}
 
 type Service struct {
-	Name string
-	Path string
-	Para string
+	Name           string
+	DockerFilePath string
+	BuildCommand   string
+	Env            map[string]interface{}
 }
 
 func init() {
 	log.SetFlags(log.LstdFlags | log.Llevel)
 
-	flag.Parse()
 	Tracer = uuid.New()[:8]
-	logfile := "/log/" + Tracer + ".log"
-	_, err := os.OpenFile(logfile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 066)
+	data, err := ioutil.ReadFile("dockerci.json")
 	if err != nil {
-		panic(err)
-	}
-	data, err := ioutil.ReadFile("woci.json")
-	if err != nil {
-		log.Tfatalf(Tracer, "read woci.json error: %v", err)
+		log.Tfatalf(Tracer, "read dockerapi.json error: %v", err)
 	}
 
 	cm := make(map[string]interface{})
 	err = json.Unmarshal(data, &cm)
 	if err != nil {
-		log.Tfatalf(Tracer, "woci.json unmarshal error: %v", err)
+		log.Tfatalf(Tracer, "dockerci.json unmarshal error: %v", err)
 	}
 
 	defer func() {
 		if r := recover(); r != nil {
-			log.Tfatalf(Tracer, "woci.json file illegal--> %v", r)
+			log.Tfatalf(Tracer, "dockerci.json file illegal--> %v", r)
 		}
 	}()
 
-	Concurrent = int(cm["Concurrent"].(float64))
-	REPO = cm["REPO"].(string)
-	ProjectPath = cm["ProjectPath"].(string) // This is a absolute PATH
-	SQLDir = cm["SQLDir"].(string)
-
-	DockerRegistryPosition = cm["DockerRegistryPosition"].(string)
-
-	//REV = cm["REV"].(string)
-
-	PGImage = cm["PGImage"].(string)
-
-	RedisImage = cm["RedisImage"].(string)
-
-	ConsulImage = cm["ConsulImage"].(string)
+	dockerCi.ProjectPath = cm["ProjectPath"].(string) // This is a absolute PATH
+	dockerCi.DockerApi = cm["DockerApi"].(string)     // Docker api
+	dockerCi.Bridge = cm["Bridge"].(string)
+	dockerCi.ServicesImage = cm["ServicesImage"].(string)
+	dockerCi.Infrastructure = cm["Infrastructure"].(map[string]interface{})
 
 	services := cm["Services"].([]interface{})
 	for _, v := range services {
+		v1 := v.(map[string]interface{})
 		s := Service{
-			Name: v.(map[string]interface{})["Name"].(string),
-			Path: v.(map[string]interface{})["Path"].(string),
-			Para: v.(map[string]interface{})["Para"].(string),
+			Name:           v1["Name"].(string),
+			DockerFilePath: v1["DockerFilePath"].(string),
+			BuildCommand:   v1["BuildCommand"].(string),
+			Env:            v1["Env"].(map[string]interface{}),
 		}
-		Services = append(Services, s)
-	}
+		dockerCi.Services = append(dockerCi.Services, s)
 
-	log.Tinfo(Tracer, "load woci.json succeed")
+	}
+	log.Tinfo(Tracer, "load dockerci.json succeed")
 }
