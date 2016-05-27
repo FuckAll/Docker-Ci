@@ -1,12 +1,12 @@
 {
   "ProjectPath":"/Users/KongFu/17mei/src/github.com/wothing/17mei",
   "DockerApi":"tcp://42.96.131.96:2375",
-  "Bridge":"bridge",
+  "Bridge":"test",
   "ServicesImage":"alpine:latest",
   "InitCommand":"make rs && make ve",
   "Infrastructure": {
           "redis": {"name":"redis", "image":"redis", "init":"xxx.sh"},
-          "pgsql": {"name":"pgsql", "image":"pgsql","init": "xxx.sh"},
+          "pgsql": {"name":"pgsql", "image":"postgres", "passwd":"wothing","dname":"meidb","duser":"postgres","init": "sql/v1.0/,sql/v1.1,sql/v1.2"},
           "consul": {"name":"consul", "image":"consul", "init":"xxx.sh"}
       },
    "Services":[

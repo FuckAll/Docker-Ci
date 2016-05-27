@@ -20,22 +20,23 @@ var (
 	Tracer string
 )
 
-var dockerCi DockerCi
+var Config DockerCi
 
 type DockerCi struct {
 	ProjectPath    string                 // This is a absolute PATH
 	DockerApi      string                 //Docker Api Default "tcp://127.0.0.1:2375"
 	Bridge         string                 //Docker Bridge Default bridge
 	ServicesImage  string                 // Service Base image for example: alpine:latest
+	InitCommand    string                 // Init Command
 	Infrastructure map[string]interface{} // Base Infrastructure for example: pgsql redis consul
 	Services       []Service
 }
 
 type Service struct {
-	Name           string
-	DockerFilePath string
-	BuildCommand   string
-	Env            map[string]interface{}
+	Name         string
+	DockerFile   map[string]interface{}
+	BuildCommand string
+	Env          map[string]interface{}
 }
 
 func init() {
@@ -59,23 +60,25 @@ func init() {
 		}
 	}()
 
-	dockerCi.ProjectPath = cm["ProjectPath"].(string) // This is a absolute PATH
-	dockerCi.DockerApi = cm["DockerApi"].(string)     // Docker api
-	dockerCi.Bridge = cm["Bridge"].(string)
-	dockerCi.ServicesImage = cm["ServicesImage"].(string)
-	dockerCi.Infrastructure = cm["Infrastructure"].(map[string]interface{})
+	Config.ProjectPath = cm["ProjectPath"].(string) // This is a absolute PATH
+	Config.DockerApi = cm["DockerApi"].(string)     // Docker api
+	Config.Bridge = cm["Bridge"].(string)
+	Config.ServicesImage = cm["ServicesImage"].(string)
+	Config.InitCommand = cm["InitCommand"].(string)
+	Config.Infrastructure = cm["Infrastructure"].(map[string]interface{})
 
 	services := cm["Services"].([]interface{})
 	for _, v := range services {
 		v1 := v.(map[string]interface{})
 		s := Service{
-			Name:           v1["Name"].(string),
-			DockerFilePath: v1["DockerFilePath"].(string),
-			BuildCommand:   v1["BuildCommand"].(string),
-			Env:            v1["Env"].(map[string]interface{}),
+			Name:         v1["Name"].(string),
+			DockerFile:   v1["DockerFile"].(map[string]interface{}),
+			BuildCommand: v1["BuildCommand"].(string),
+			Env:          v1["Env"].(map[string]interface{}),
 		}
-		dockerCi.Services = append(dockerCi.Services, s)
+		Config.Services = append(Config.Services, s)
 
 	}
+	fmt.Println(Config)
 	log.Tinfo(Tracer, "load dockerci.json succeed")
 }

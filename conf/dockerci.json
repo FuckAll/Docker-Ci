@@ -1,19 +1,22 @@
 {
-  "ProjectPath":"/gopath/src/github.com/xxxx",
+  "ProjectPath":"/Users/KongFu/17mei/src/github.com/wothing/17mei",
   "DockerApi":"tcp://42.96.131.96:2375",
   "Bridge":"bridge",
   "ServicesImage":"alpine:latest",
+  "InitCommand":"make rs && make ve",
   "Infrastructure": {
           "redis": {"name":"redis", "image":"redis", "init":"xxx.sh"},
           "pgsql": {"name":"pgsql", "image":"pgsql","init": "xxx.sh"},
           "consul": {"name":"consul", "image":"consul", "init":"xxx.sh"}
       },
-
    "Services":[
     {   
       "Name": "story",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/story -ch $CH -cp $CP -ss $SS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd story; go install",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -29,8 +32,11 @@
     },  
     {   
       "Name": "verification",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/verification -rh $RH -rp $RP -p $P"
+      },
+      "BuildCommand":"cd verification; go install",
       "Env":{
           "RH":"redis",
           "RP":"6347",
@@ -40,8 +46,11 @@
     },  
     {   
       "Name": "activity",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/activity -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd activity; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -54,9 +63,13 @@
     },  
     {   
       "Name": "push",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/push -apns $APNS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd push; go install",
        "Env":{
+          "APNS":false,
           "DH":"pgsql",
           "DN":"meidb",
           "DP":"5432",
@@ -68,8 +81,11 @@
     },  
     {   
       "Name": "other",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/other -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd other; go install",
        "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -82,8 +98,11 @@
     },  
     {   
       "Name": "mediastore",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/mediastore -env $ENV -p $P"
+      },
+      "BuildCommand":"cd mediastore; go install",
       "Env":{
           "ENV":"test",
           "P":"3000"
@@ -92,8 +111,11 @@
     },
     { 
       "Name": "user",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/user -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd user;go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -101,13 +123,15 @@
           "DPWD":"wothing",
           "DU":"postgres",
           "P":"3000"
-          
         }
     },
     {
       "Name": "version",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/version -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd version;go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -120,8 +144,11 @@
     },
     {
       "Name": "statistic",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/statistic -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd statistic; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -133,8 +160,11 @@
     },
     {
       "Name": "share",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/share -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd share; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -146,8 +176,11 @@
     },
     {
       "Name": "wechat",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/wechat.exe -appid $APPID -secret $SECRET -freq $FREQ -p $P"
+      },
+      "BuildCommand":"cd wechat; go install",
       "Env":{
           "APPID":"wx5f6076d6fe66f16b",
           "SECRET":"d4624c36b6795d1d99dcf0547af5443d ",
@@ -157,8 +190,11 @@
     },
     {
       "Name": "consult",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/consult -ch $CH -cp $CP -ss $SS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd consult; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -170,8 +206,11 @@
     },
     {
       "Name": "authority",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/authority -ch $CH -cp $CP -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P -ss $SS"
+      },
+      "BuildCommand":"cd authority; go install",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -186,8 +225,11 @@
     },
     {
       "Name": "config",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/config -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd config; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -200,8 +242,11 @@
     },
     {
       "Name": "message",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/message -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd message; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -213,8 +258,11 @@
     },
     {
       "Name": "hospital",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/hospital -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd hospital; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -226,8 +274,11 @@
     },
     {
       "Name": "order",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/order -ch $CH -cp $CP -ss $SS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd order; go install",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -242,8 +293,11 @@
     },
     {
       "Name": "confidant",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/confidant -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd confidant; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -255,8 +309,11 @@
     },
     {
       "Name": "goods",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/goods -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd goods; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -268,8 +325,11 @@
     },
     {
       "Name": "account",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/account -ch $CH -cp $CP -ss $SS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd account; go install",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -284,8 +344,11 @@
     },
     {
       "Name": "banner",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/banner -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd banner; go install",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -297,8 +360,11 @@
     },
     {
       "Name": "appway",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/appway -rh $RH -rp $RP -rpwd $RPWD -cert $CERT -key $KEY -ch $CH -cp $CP -p $P -ss $SS"
+      },
+      "BuildCommand":"cd gateway/appway;go install",
       "Env":{
           "RH":"redis",
           "RP": "6379",
@@ -310,9 +376,14 @@
     },
     {
       "Name": "interway",
-      "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"xx",
+      "DockerFile": {
+              "CopyTo":"/",
+              "CMD":"/interway -rh $RH -rp $RP -cert $CERT -key $KEY -ch $CH -cp $CP -p $P -ss $SS"
+      },
+      "BuildCommand":"cd gateway/interway; go install",
       "Env":{
+          "RH":"redis",
+          "RP":"6379",
           "CH":"consul",
           "CP":"8600",
           "SS":".service.dc1.consul",

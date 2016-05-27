@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/fsouza/go-dockerclient"
+	"github.com/wothing/log"
 )
 
 var endpoint = "tcp://42.96.131.96:2375"
@@ -32,7 +33,7 @@ func PullImage(Repository, Registry, Tag string) error {
 }
 
 func ListImages(All bool) error {
-	images, err := client.ListImages(docker.ListImagesOptions{All: All})
+	images, err := client.ListImages(docker.ListImagesOptions{All: true})
 	if err != nil {
 		return err
 	}
@@ -41,6 +42,23 @@ func ListImages(All bool) error {
 		fmt.Println("RepoTags:", img.RepoTags)
 	}
 	return nil
+}
+
+func ExistImage(imageName string) bool {
+	images, err := client.ListImages(docker.ListImagesOptions{All: true})
+	if err != nil {
+		log.Fatal("ExistImage Error:", err)
+	}
+	for _, image := range images {
+		for _, repotage := range image.RepoTags {
+			fmt.Println(repotage)
+			if imageName == repotage {
+				return true
+			}
+		}
+
+	}
+	return false
 }
 
 func RemoveImage(name string) error {

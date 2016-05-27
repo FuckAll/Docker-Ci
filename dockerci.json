@@ -1,19 +1,19 @@
 {
   "ProjectPath":"/gopath/src/github.com/xxxx",
   "DockerApi":"tcp://42.96.131.96:2375",
-  "brige":"bridge",
+  "Bridge":"bridge",
   "ServicesImage":"alpine:latest",
-  "infrastructure": {
-          "redis": {"use":true ,"name":"redis", "image":"redis", "init":"xxx.sh"},
-          "pgsql": {"use":true ,"name":"pgsql", "image":"pgsql","init": "xxx.sh"},
-          "consul": {"use":true ,"name":"consul", "image":"consul", "init":"xxx.sh"}
+  "Infrastructure": {
+          "redis": {"name":"redis", "image":"redis", "init":"xxx.sh"},
+          "pgsql": {"name":"pgsql", "image":"pgsql","init": "xxx.sh"},
+          "consul": {"name":"consul", "image":"consul", "init":"xxx.sh"}
       },
 
    "Services":[
     {   
       "Name": "story",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -30,7 +30,7 @@
     {   
       "Name": "verification",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "RH":"redis",
           "RP":"6347",
@@ -41,7 +41,7 @@
     {   
       "Name": "activity",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -55,7 +55,7 @@
     {   
       "Name": "push",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
        "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -69,7 +69,7 @@
     {   
       "Name": "other",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
        "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -83,7 +83,7 @@
     {   
       "Name": "mediastore",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "ENV":"test",
           "P":"3000"
@@ -93,7 +93,7 @@
     { 
       "Name": "user",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -107,7 +107,7 @@
     {
       "Name": "version",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -121,7 +121,7 @@
     {
       "Name": "statistic",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -134,7 +134,7 @@
     {
       "Name": "share",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -147,7 +147,7 @@
     {
       "Name": "wechat",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "APPID":"wx5f6076d6fe66f16b",
           "SECRET":"d4624c36b6795d1d99dcf0547af5443d ",
@@ -158,7 +158,7 @@
     {
       "Name": "consult",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -171,7 +171,7 @@
     {
       "Name": "authority",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -187,7 +187,7 @@
     {
       "Name": "config",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -201,7 +201,7 @@
     {
       "Name": "message",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -214,7 +214,7 @@
     {
       "Name": "hospital",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -227,7 +227,7 @@
     {
       "Name": "order",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -243,7 +243,7 @@
     {
       "Name": "confidant",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -256,7 +256,7 @@
     {
       "Name": "goods",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -269,7 +269,7 @@
     {
       "Name": "account",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "CH":"consul",
           "CP":"8600",
@@ -285,7 +285,7 @@
     {
       "Name": "banner",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "DH":"pgsql",
           "DN":"meidb",
@@ -298,7 +298,7 @@
     {
       "Name": "appway",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "RH":"redis",
           "RP": "6379",
@@ -311,7 +311,7 @@
     {
       "Name": "interway",
       "DockerFilePath": "/xxx/xxx/xxx/Dockerfile",
-      "BuildCommand":"",
+      "BuildCommand":"xx",
       "Env":{
           "CH":"consul",
           "CP":"8600",

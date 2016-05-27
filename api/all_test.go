@@ -6,8 +6,8 @@ import (
 	//	"github.com/fsouza/go-dockerclient"
 )
 
-var Id string
-var VolumeName string
+//var Id string
+//var VolumeName string
 
 // List Image
 //func TestListImage(t *testing.T) {
@@ -15,6 +15,14 @@ var VolumeName string
 //fmt.Println("TestListImage Error")
 //}
 //}
+// Exist Image
+func TestExistImage(t *testing.T) {
+	imagename := "41d33f60-statist"
+	fmt.Println(ExistImage(imagename))
+	//if ListImages(false) != nil {
+	//fmt.Println("TestListImage Error")
+	//}
+}
 
 // Pull Image
 //func TestPullImage(t *testing.T) {
@@ -82,15 +90,15 @@ var VolumeName string
 //}
 
 // Create Container
-func TestCreateContainer(t *testing.T) {
-	var err error
-	Id, err = CreateContainer("test", "test", []string{"app:/test"})
-	if err != nil {
-		fmt.Println("TestCreateContainer Error")
-		fmt.Println(err)
-	}
-	fmt.Println("CreateContainer ID:", Id)
-}
+//func TestCreateContainer(t *testing.T) {
+//var err error
+//Id, err = CreateContainer("test", "test", []string{"app:/test"})
+//if err != nil {
+//fmt.Println("TestCreateContainer Error")
+//fmt.Println(err)
+//}
+//fmt.Println("CreateContainer ID:", Id)
+//}
 
 // ConnectNetWork
 //func TestConnectNetwork(t *testing.T) {
@@ -104,14 +112,14 @@ func TestCreateContainer(t *testing.T) {
 //}
 
 // Start Container
-func TestStartContainer(t *testing.T) {
-	err := StartContainer(Id, "test")
-	if err != nil {
-		fmt.Println("TestStartContainer Error")
-		fmt.Println(err)
-	}
-	fmt.Println("StartContainer ID:", Id)
-}
+//func TestStartContainer(t *testing.T) {
+//err := StartContainer(Id, "test")
+//if err != nil {
+//fmt.Println("TestStartContainer Error")
+//fmt.Println(err)
+//}
+//fmt.Println("StartContainer ID:", Id)
+//}
 
 // Stop Container
 //func TestStopContainer(t *testing.T) {
