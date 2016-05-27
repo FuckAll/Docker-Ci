@@ -48,24 +48,28 @@ import (
 //}
 
 func TestPostgresStart(t *testing.T) {
-	err := CreatePostgresContainer()
+	err := StartPostgres()
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = StartPostgresContainer()
-	if err != nil {
-		fmt.Println(err)
-	}
+	//err := CreatePostgresContainer()
+	//if err != nil {
+	//fmt.Println(err)
+	//}
+	//err = StartPostgresContainer()
+	//if err != nil {
+	//fmt.Println(err)
+	//}
 }
 
-func TestPostgresStop(t *testing.T) {
-	err := StopPostgresContainer()
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = RemovePostgresContainer()
-	if err != nil {
-		fmt.Println(err)
-	}
+//func TestPostgresStop(t *testing.T) {
+//err := StopPostgresContainer()
+//if err != nil {
+//fmt.Println(err)
+//}
+//err = RemovePostgresContainer()
+//if err != nil {
+//fmt.Println(err)
+//}
 
-}
+//}

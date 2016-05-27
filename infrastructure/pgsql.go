@@ -8,13 +8,16 @@
 package infrastructure
 
 import (
-	"bytes"
+	"database/sql"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/FuckAll/Docker-Ci/api"
+	"github.com/FuckAll/Docker-Ci/build"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/FuckAll/Docker-Ci/filewalk"
 	_ "github.com/lib/pq"
@@ -49,7 +52,7 @@ func StartPostgres() error {
 	if err != nil {
 		return err
 	}
-	err := StartPostgresContainer()
+	err = StartPostgresContainer()
 	if err != nil {
 		return err
 	}
@@ -131,7 +134,7 @@ func PostgresCheck() bool {
 }
 
 func PostgresInit(files ...string) error {
-	dsn := FMT("postgres://" + Postgres.Duser + ":" + Postgres.Passwd + "@" + conf.Tracer + "-" + Postgres.Name + "." + conf.Config.Bridge + ":5432/" + Postgres.Dname + "?sslmode=disable")
+	dsn := build.FMT("postgres://" + Postgres.Duser + ":" + Postgres.Passwd + "@" + conf.Tracer + "-" + Postgres.Name + "." + conf.Config.Bridge + ":5433/" + Postgres.Dname + "?sslmode=disable")
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Tinfof(conf.Tracer, "error on connecting to db: %s", err)
@@ -166,6 +169,12 @@ func PostgresInit(files ...string) error {
 			log.Tinfof(conf.Tracer, "reading sql file error : %s", f)
 			return err
 		}
+		_, err = db.Exec(string(sql))
+		if err != nil {
+			log.Info("sql error:", err)
+			return err
+		}
 
 	}
+	return nil
 }
