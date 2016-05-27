@@ -134,7 +134,8 @@ func PostgresCheck() bool {
 }
 
 func PostgresInit(files ...string) error {
-	dsn := build.FMT("postgres://" + Postgres.Duser + ":" + Postgres.Passwd + "@" + conf.Tracer + "-" + Postgres.Name + "." + conf.Config.Bridge + ":5433/" + Postgres.Dname + "?sslmode=disable")
+	dsn := build.FMT("postgres://" + Postgres.Duser + ":" + Postgres.Passwd + "@" + conf.Tracer + "-" + Postgres.Name + ":5432/" + Postgres.Dname + "?sslmode=disable")
+	fmt.Println(dsn)
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Tinfof(conf.Tracer, "error on connecting to db: %s", err)
