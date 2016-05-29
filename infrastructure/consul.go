@@ -8,13 +8,14 @@
 package infrastructure
 
 import (
-	//"fmt"
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/wothing/log"
 	"net/http"
+	//	"strconv"
 	"time"
 )
 
@@ -41,36 +42,36 @@ func StartConsul() error {
 	err := CreateConsulContainer()
 	if err != nil {
 		return err
-		{
-			err := StartConsulContainer()
-			if err != nil {
-				return err
-			}
-			for i := 0; ; i++ {
-				if i > 30 {
-					log.Infof("After for a long time we can't connection to consul")
-				}
+	}
 
-				if ConsulCheck() {
-					log.Tinfof(conf.Tracer, "connection to consul success")
-					err := ConsulRegister()
-					if err != nil {
-						return err
-					}
-				} else {
-					log.Tinfof(conf.Tracer, "Try connection to consul %d time(s)", i+1)
-					time.Sleep(time.Second)
-				}
-			}
+	err = StartConsulContainer()
+	if err != nil {
+		return err
+	}
+	for i := 0; ; i++ {
+		if i > 30 {
+			log.Infof("After for a long time we can't connection to consul")
+		}
 
+		if ConsulCheck() {
+			log.Tinfof(conf.Tracer, "connection to consul success")
+			break
+		} else {
+			log.Tinfof(conf.Tracer, "Try connection to consul %d time(s)", i+1)
+			time.Sleep(time.Second)
 		}
 	}
+	err = ConsulRegister()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func CreateConsulContainer() error {
 	name := conf.Tracer + "-" + Consul.Name
-	consulContainerId, err := api.CreateContainerWithCmd(name, Consul.Image, []string{"app:/test"}, []string{"agent -dev -bind=0.0.0.0 -client=0.0.0.0"})
+	consulContainerId, err := api.CreateContainerWithCmd(name, Consul.Image, []string{"app:/test"}, []string{"consul", "agent", "-dev", "-bind=0.0.0.0", "-client=0.0.0.0"})
 	if err != nil {
 		log.Terror(conf.Tracer, "CreateConsulContainer Error:", err)
 		return err
@@ -129,10 +130,12 @@ func ConsulCheck() bool {
 }
 
 func ConsulRegister() error {
-	url := "http://" + conf.Tracer + "-" + Consul.Name + "." + conf.Config.Bridge + ":8500/v1/agent/service/register"
+	url := "http://" + conf.Tracer + "-" + Consul.Name + ":8500/v1/agent/service/register"
 	for _, service := range conf.Config.Services {
 		port := service.Env["P"].(string)
-		jsonStr := []byte(`{"Name":"` + service.Name + `", "Port":"` + port + `", "Address":"` + conf.Tracer + "-" + service.Name + `"}`)
+		//p, _ := strconv.Atoi(port)
+		jsonStr := []byte(`{"Name":"` + service.Name + `", "Port":` + port + `, "Address":"` + conf.Tracer + "-" + service.Name + `"}`)
+		fmt.Println(string(jsonStr))
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 		resp, err := client.Do(req)
 		if err != nil {
