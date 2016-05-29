@@ -69,7 +69,7 @@
       },
       "BuildCommand":"cd push;GOHOSTARCH=amd64 GOHOSTOS=linux CGO_ENABLED=0 go install",
        "Env":{
-          "APNS":false,
+          "APNS":"false",
           "DH":"pgsql",
           "DN":"meidb",
           "DP":"5432",
