@@ -69,7 +69,7 @@
       },
       "BuildCommand":"cd push; go install",
        "Env":{
-          "APNS":false,
+          "APNS":"false",
           "DH":"pgsql",
           "DN":"meidb",
           "DP":"5432",

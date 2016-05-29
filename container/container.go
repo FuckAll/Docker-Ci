@@ -2,8 +2,8 @@ package container
 
 import (
 	//	"bytes"
-	"errors"
-	//	"fmt"
+	//	"errors"
+	"fmt"
 	//	"os"
 	//	"os/exec"
 	//	"time"
@@ -12,7 +12,7 @@ import (
 	"github.com/FuckAll/Docker-Ci/conf"
 )
 
-var expire = 20 // stop container expire time
+var expire uint = 20 // stop container expire time
 
 var AppContainerIds []string
 
@@ -40,30 +40,31 @@ func StopApp() error {
 func CreateAppContainer() error {
 	var containerIds []string
 	for _, service := range conf.Config.Services {
-		//containerName := conf.Tracer + "-" + service
+		var env []string
 		containerName := conf.Tracer + "-" + service.Name
 		imageName := conf.Tracer + "-" + service.Name + ":latest"
-		//if or not container exist
-		var env []string
 		for k, v := range service.Env {
+			var tmp string
 			switch k {
 			case "CH", "RH", "DH":
-				tmp := k + "=" + conf.Tracer + "-" + v
+				tmp = k + "=" + conf.Tracer + "-" + v.(string)
 			default:
-				tmp := k + "=" + v.(string)
+				tmp = k + "=" + v.(string)
 			}
+			fmt.Println(tmp)
 			env = append(env, tmp)
 		}
-		if !api.ExistImage(imageName) {
-			return []string{""}, errors.New("CreateImages ExistImage Error")
-		}
+		fmt.Println("--------------------")
+		//if !api.ExistImage(imageName) {
+		//	return errors.New("CreateImages ExistImage Error")
+		//}
 		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"}, env...)
 		if err != nil {
-			return []string{""}, err
+			return err
 		}
 		containerIds = append(containerIds, containerId)
 	}
-	AppContainerIds = containerId
+	AppContainerIds = containerIds
 	return nil
 }
 

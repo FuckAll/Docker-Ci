@@ -27,7 +27,7 @@ func CiRun() {
 	//build.BuildImage()
 
 	//2. 启动基础服务，例如：pgsql redis consul
-	//conf.Tracer = "b29e1b88"
+	conf.Tracer = "b29e1b88"
 	err := infrastructure.StartConsul()
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
