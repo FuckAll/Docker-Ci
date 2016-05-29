@@ -14,7 +14,30 @@ import (
 
 var expire = 20 // stop container expire time
 
-func CreateAppContainer() ([]string, error) {
+var AppContainerIds []string
+
+func StartApp() error {
+	err := CreateAppContainer()
+	if err != nil {
+		return err
+	}
+	err = StrartAppContainer()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func StopApp() error {
+	err := StopAppContainer()
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func CreateAppContainer() error {
 	var containerIds []string
 	for _, service := range conf.Config.Services {
 		//containerName := conf.Tracer + "-" + service
@@ -23,7 +46,12 @@ func CreateAppContainer() ([]string, error) {
 		//if or not container exist
 		var env []string
 		for k, v := range service.Env {
-			tmp := k + "=" + v.(string)
+			switch k {
+			case "CH", "RH", "DH":
+				tmp := k + "=" + conf.Tracer + "-" + v
+			default:
+				tmp := k + "=" + v.(string)
+			}
 			env = append(env, tmp)
 		}
 		if !api.ExistImage(imageName) {
@@ -35,11 +63,12 @@ func CreateAppContainer() ([]string, error) {
 		}
 		containerIds = append(containerIds, containerId)
 	}
-	return containerIds, nil
+	AppContainerIds = containerId
+	return nil
 }
 
-func StrartAppContainer(containerIds []string) error {
-	for _, containerId := range containerIds {
+func StrartAppContainer() error {
+	for _, containerId := range AppContainerIds {
 		err := api.StartContainer(containerId, conf.Config.Bridge)
 		if err != nil {
 			return err
@@ -49,8 +78,8 @@ func StrartAppContainer(containerIds []string) error {
 
 }
 
-func StopAppContainer(containerIds []string) error {
-	for _, containerId := range containerIds {
+func StopAppContainer() error {
+	for _, containerId := range AppContainerIds {
 		err := api.StopContainer(containerId, expire)
 		if err != nil {
 			return err
@@ -59,8 +88,8 @@ func StopAppContainer(containerIds []string) error {
 	return nil
 }
 
-func RemoveAppContrainer(containerIds []string) error {
-	for _, containerId := range containerIds {
+func RemoveAppContrainer() error {
+	for _, containerId := range AppContainerIds {
 		err := api.RemoveContainer(containerId, false)
 		if err != nil {
 			return err

@@ -12,7 +12,7 @@ import (
 
 	//"github.com/FuckAll/Docker-Ci/build"
 	"github.com/FuckAll/Docker-Ci/conf"
-	//	"github.com/FuckAll/Docker-Ci/container"
+	"github.com/FuckAll/Docker-Ci/container"
 	"github.com/FuckAll/Docker-Ci/infrastructure"
 	"github.com/wothing/log"
 )
@@ -39,11 +39,14 @@ func CiRun() {
 	}
 	err = infrastructure.StartPostgres()
 	if err != nil {
-		log.Tfatalf(conf.Tracer, "Ci StartPOstgres Error: %s", err)
+		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
 
 	//3. 启动业务代码容器
-	//err = container.CreateAppContainer()
+	err = container.StartApp()
+	if err != nil {
+		log.Tfatalf(conf.Tracer, "Ci StartApp Error: %s", err)
+	}
 	//4. 测试
 	//5. 根据版本选择是否清除环境
 
