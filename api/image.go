@@ -8,7 +8,7 @@ import (
 	"github.com/wothing/log"
 )
 
-var endpoint = "tcp://local.docker:2375"
+var endpoint = "tcp://192.168.64.3:2375"
 
 var client *docker.Client
 
