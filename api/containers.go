@@ -25,6 +25,29 @@ func CreateContainer(Name, Image string, Volumes []string, Env ...string) (strin
 	return container.ID, nil
 }
 
+func CreateContainerWithCmd(Name, Image string, Volumes []string, Cmd []string, Env ...string) (string, error) {
+	configs := docker.Config{
+		Image: Image,
+		Tty:   true,
+		Env:   Env,
+		Cmd:   Cmd,
+	}
+	hostconfigs := docker.HostConfig{
+		Binds: Volumes,
+	}
+	opts := docker.CreateContainerOptions{
+		Name:       Name,
+		Config:     &configs,
+		HostConfig: &hostconfigs,
+	}
+	container, err := client.CreateContainer(opts)
+	if err != nil {
+		return "", err
+	}
+	return container.ID, nil
+
+}
+
 func StartContainer(Id, NetworkMode string) error {
 	hostConfig := docker.HostConfig{
 		NetworkMode: NetworkMode,

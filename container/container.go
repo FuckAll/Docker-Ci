@@ -1,4 +1,4 @@
-package build
+package container
 
 import (
 	//	"bytes"
@@ -21,10 +21,15 @@ func CreateAppContainer() ([]string, error) {
 		containerName := conf.Tracer + "-" + service.Name
 		imageName := conf.Tracer + "-" + service.Name + ":latest"
 		//if or not container exist
+		var env []string
+		for k, v := range service.Env {
+			tmp := k + "=" + v.(string)
+			env = append(env, tmp)
+		}
 		if !api.ExistImage(imageName) {
 			return []string{""}, errors.New("CreateImages ExistImage Error")
 		}
-		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"})
+		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"}, env...)
 		if err != nil {
 			return []string{""}, err
 		}

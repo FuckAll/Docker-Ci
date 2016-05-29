@@ -70,7 +70,7 @@ func StartConsul() error {
 
 func CreateConsulContainer() error {
 	name := conf.Tracer + "-" + Consul.Name
-	consulContainerId, err := api.CreateContainer(name, Consul.Image, []string{"app:/test"})
+	consulContainerId, err := api.CreateContainerWithCmd(name, Consul.Image, []string{"app:/test"}, []string{"agent -dev -bind=0.0.0.0 -client=0.0.0.0"})
 	if err != nil {
 		log.Terror(conf.Tracer, "CreateConsulContainer Error:", err)
 		return err
