@@ -178,7 +178,7 @@
       "Name": "wechat",
       "DockerFile": {
               "CopyTo":"/wechat",
-              "CMD":"/wechat.exe -appid $APPID -secret $SECRET -freq $FREQ -p $P"
+              "CMD":"/wechat -appid $APPID -secret $SECRET -freq $FREQ -p $P"
       },
       "BuildCommand":"cd wechat;GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
       "Env":{
@@ -192,7 +192,7 @@
       "Name": "consult",
       "DockerFile": {
               "CopyTo":"/consult",
-              "CMD":"/consult -ch $CH -cp $CP -ss $SS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+              "CMD":"/consult -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
       },
       "BuildCommand":"cd consult;GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
       "Env":{
