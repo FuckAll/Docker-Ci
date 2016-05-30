@@ -69,7 +69,7 @@
       },
       "BuildCommand":"cd push;GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
        "Env":{
-          "APNS":"false",
+          "APNS":"",
           "DH":"pgsql",
           "DN":"meidb",
           "DP":"5432",
@@ -370,17 +370,18 @@
           "RP": "6379",
           "CH":"consul",
           "CP":"8600",
+          "RPWD":"",
           "SS":".service.dc1.consul",
           "P":"3000",
-          "CERT":"",
-          "KEY":""
+          "CERT":"17mei.crt",
+          "KEY":"17mei.key"
         }
     },
     {
       "Name": "interway",
       "DockerFile": {
               "CopyTo":"/interway",
-              "CMD":"/interway -rh $RH -rp $RP -cert $CERT -key $KEY -ch $CH -cp $CP -p $P -ss $SS"
+              "CMD":"/interway -rh $RH -rp $RP -rpwd $RPWD -cert $CERT -key $KEY -ch $CH -cp $CP -p $P -ss $SS"
       },
       "BuildCommand":"cd gateway/interway;GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
       "Env":{
@@ -388,10 +389,11 @@
           "RP":"6379",
           "CH":"consul",
           "CP":"8600",
+          "RPWD":"",
           "SS":".service.dc1.consul",
           "P":"3000",
-          "CERT":"",
-          "KEY":""
+          "CERT":"17mei.crt",
+          "KEY":"17mei.key"
         }
     }
 

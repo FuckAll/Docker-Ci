@@ -10,7 +10,7 @@ package ci
 import (
 	"fmt"
 
-	"github.com/FuckAll/Docker-Ci/build"
+	//	"github.com/FuckAll/Docker-Ci/build"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/FuckAll/Docker-Ci/container"
 	"github.com/FuckAll/Docker-Ci/infrastructure"
@@ -19,16 +19,16 @@ import (
 
 func CiRun() {
 	//1.编译代码，制作docker 镜像
-	_, err := build.BuildApp()
-	if err != nil {
-		log.Tfatalf(conf.Tracer, "BuildApp Error: %s", err)
-	}
-	build.CreateDockerFile()
-	build.BuildImage()
+	//_, err := build.BuildApp()
+	//if err != nil {
+	//log.Tfatalf(conf.Tracer, "BuildApp Error: %s", err)
+	//}
+	//build.CreateDockerFile()
+	//build.BuildImage()
 
 	//2. 启动基础服务，例如：pgsql redis consul
-	//conf.Tracer = "b29e1b88"
-	err = infrastructure.StartConsul()
+	conf.Tracer = "99452d5a"
+	err := infrastructure.StartConsul()
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
 	}
