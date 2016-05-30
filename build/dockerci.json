@@ -371,6 +371,8 @@
           "CH":"consul",
           "CP":"8600",
           "SS":".service.dc1.consul",
+          "CERT":"17mei.crt",
+          "KEY":"17mei.key",
           "P":"3000"
         }
     },
@@ -387,6 +389,8 @@
           "CH":"consul",
           "CP":"8600",
           "SS":".service.dc1.consul",
+          "CERT":"17mei.crt",
+          "KEY":"17mei.key",
           "P":"3000"
         }
     }

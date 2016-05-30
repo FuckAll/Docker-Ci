@@ -39,7 +39,7 @@
       "BuildCommand":"cd verification; GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
       "Env":{
           "RH":"redis",
-          "RP":"6347",
+          "RP":"6379",
           "P":"3000"    
         }
       
@@ -65,7 +65,7 @@
       "Name": "push",
       "DockerFile": {
               "CopyTo":"/push",
-              "CMD":"/push -apns $APNS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+              "CMD":"/push -dh $DH -apns $APNS -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
       },
       "BuildCommand":"cd push;GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
        "Env":{
@@ -371,7 +371,9 @@
           "CH":"consul",
           "CP":"8600",
           "SS":".service.dc1.consul",
-          "P":"3000"
+          "P":"3000",
+          "CERT":"",
+          "KEY":""
         }
     },
     {
@@ -387,7 +389,9 @@
           "CH":"consul",
           "CP":"8600",
           "SS":".service.dc1.consul",
-          "P":"3000"
+          "P":"3000",
+          "CERT":"",
+          "KEY":""
         }
     }
 

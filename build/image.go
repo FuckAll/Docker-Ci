@@ -38,8 +38,15 @@ func CreateDockerFile() {
 		}
 		file.WriteString(fmt.Sprintln(`FROM` + ` ` + conf.Config.ServicesImage))
 		file.WriteString(fmt.Sprintln(`COPY ` + service.Name + ` ` + destanition.(string)))
-		file.WriteString(`CMD ` + string(cmd.(string)))
-		file.Close()
+		if service.Name != "appway" && service.Name != "interway" {
+			file.WriteString(`CMD ` + string(cmd.(string)))
+			file.Close()
+		} else {
+			file.WriteString(fmt.Sprintln("COPY 17mei.crt /17mei.crt"))
+			file.WriteString(fmt.Sprintln("COPY 17mei.key /17mei.key"))
+			file.WriteString(`CMD ` + string(cmd.(string)))
+
+		}
 	}
 
 }
