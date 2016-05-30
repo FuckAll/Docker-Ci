@@ -28,6 +28,7 @@ type DockerCi struct {
 	Bridge         string                 //Docker Bridge Default bridge
 	ServicesImage  string                 // Service Base image for example: alpine:latest
 	InitCommand    string                 // Init Command
+	TestCommand    string                 // Test Command
 	Infrastructure map[string]interface{} // Base Infrastructure for example: pgsql redis consul
 	Services       []Service
 }
@@ -65,6 +66,7 @@ func init() {
 	Config.Bridge = cm["Bridge"].(string)
 	Config.ServicesImage = cm["ServicesImage"].(string)
 	Config.InitCommand = cm["InitCommand"].(string)
+	Config.TestCommand = cm["TestCommand"].(string)
 	Config.Infrastructure = cm["Infrastructure"].(map[string]interface{})
 
 	services := cm["Services"].([]interface{})
