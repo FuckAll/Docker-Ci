@@ -18,15 +18,17 @@ var Redis CreateRedisOpts
 var RedisContainerId string
 
 type CreateRedisOpts struct {
-	Image string
-	Name  string
-	Init  string
+	Image  string
+	Name   string
+	Passwd string
+	Init   string
 }
 
 func init() {
 	redismap := (conf.Config.Infrastructure["redis"]).(map[string]interface{})
 	Redis.Name = (redismap["name"]).(string)
 	Redis.Image = (redismap["image"]).(string)
+	Redis.Passwd = (redismap["passwd"]).(string)
 	Redis.Init = (redismap["init"]).(string)
 }
 
@@ -45,7 +47,8 @@ func StartRedis() error {
 
 func CreateRedisContainer() error {
 	name := conf.Tracer + "-" + Redis.Name
-	redisContainerId, err := api.CreateContainer(name, Redis.Image, []string{"app:/test"})
+	passwd := "REDIS_PASS=" + Redis.Passwd
+	redisContainerId, err := api.CreateContainer(name, Redis.Image, []string{"app:/test"}, passwd)
 	if err != nil {
 		log.Terror("CreateRedisContainer Error:", err)
 		return err

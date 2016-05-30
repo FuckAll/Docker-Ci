@@ -5,7 +5,7 @@
   "ServicesImage":"alpine:latest",
   "InitCommand":"make idl && make ve",
   "Infrastructure": {
-          "redis": {"name":"redis", "image":"redis", "init":"xxx.sh"},
+          "redis": {"name":"redis", "image":"redis","passwd":"wothing","init":"xxx.sh"},
           "pgsql": {"name":"pgsql", "image":"postgres", "passwd":"wothing","dname":"meidb","duser":"postgres","init": "sql/v1.0,sql/v1.1,sql/v1.2"},
           "consul": {"name":"consul", "image":"consul", "init":"xxx.sh"}
       },
@@ -40,7 +40,7 @@
       "Env":{
           "RH":"redis",
           "RP":"6379",
-          "RPWD":"iNfiFSTdnfQ3HbiclkfMVDEDISodiN3L",
+          "RPWD":"wothing",
           "P":"3000"    
         }
       
@@ -371,7 +371,7 @@
           "RP": "6379",
           "CH":"consul",
           "CP":"8600",
-          "RPWD":"iNfiFSTdnfQ3HbiclkfMVDEDISodiN3L",
+          "RPWD":"wothing",
           "SS":".service.dc1.consul",
           "P":"3000",
           "CERT":"17mei.crt",
@@ -390,7 +390,7 @@
           "RP":"6379",
           "CH":"consul",
           "CP":"8600",
-          "RPWD":"iNfiFSTdnfQ3HbiclkfMVDEDISodiN3L",
+          "RPWD":"wothing",
           "SS":".service.dc1.consul",
           "P":"3000",
           "CERT":"17mei.crt",
