@@ -34,12 +34,13 @@
       "Name": "verification",
       "DockerFile": {
               "CopyTo":"/verification",
-              "CMD":"/verification -rh $RH -rp $RP -p $P"
+              "CMD":"/verification -rh $RH -rp $RP -rpwd $RPWD -p $P"
       },
       "BuildCommand":"cd verification; GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
       "Env":{
           "RH":"redis",
           "RP":"6379",
+          "RPWD":"iNfiFSTdnfQ3HbiclkfMVDEDISodiN3L",
           "P":"3000"    
         }
       
@@ -370,7 +371,7 @@
           "RP": "6379",
           "CH":"consul",
           "CP":"8600",
-          "RPWD":"",
+          "RPWD":"iNfiFSTdnfQ3HbiclkfMVDEDISodiN3L",
           "SS":".service.dc1.consul",
           "P":"3000",
           "CERT":"17mei.crt",
@@ -389,7 +390,7 @@
           "RP":"6379",
           "CH":"consul",
           "CP":"8600",
-          "RPWD":"",
+          "RPWD":"iNfiFSTdnfQ3HbiclkfMVDEDISodiN3L",
           "SS":".service.dc1.consul",
           "P":"3000",
           "CERT":"17mei.crt",
