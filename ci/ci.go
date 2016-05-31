@@ -101,8 +101,8 @@ func CiTestAppClean() {
 
 func CiPush(traceId string) {
 	for _, service := range conf.Config.Services {
-		name := traceId + "-" + service.Name
 		Registry := conf.Config.Registry
+		name := Registry + "/" + traceId + "-" + service.Name
 		err := api.PushImage(name, "latest", Registry)
 		if err != nil {
 			log.Tfatalf(conf.Tracer, "Push Images Error: %s", err)

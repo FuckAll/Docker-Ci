@@ -93,17 +93,21 @@ func PushImage(Name, Tag, Registry string) error {
 		Tag:               Tag,
 		Registry:          Registry,
 		OutputStream:      &buf,
+		RawJSONStream:     false,
 		InactivityTimeout: time.Second * 100,
 	}
 	auth, err := AuthFromDockercfg()
+	fmt.Println(opts)
 	if err != nil {
 		return err
 	}
-	fmt.Println(auth.Configs[Registry].Username)
-	fmt.Println(auth.Configs[Registry].Password)
 	err = client.PushImage(opts, auth.Configs[Registry])
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func ChangeTag(Repo, Tag, Name string) {
+	err := client.TagImage
 }
