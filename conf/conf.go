@@ -23,12 +23,13 @@ var (
 var Config DockerCi
 
 type DockerCi struct {
-	ProjectPath    string                 // This is a absolute PATH
-	DockerApi      string                 //Docker Api Default "tcp://127.0.0.1:2375"
-	Bridge         string                 //Docker Bridge Default bridge
-	ServicesImage  string                 // Service Base image for example: alpine:latest
-	InitCommand    string                 // Init Command
-	TestCommand    string                 // Test Command
+	ProjectPath    string // This is a absolute PATH
+	DockerApi      string //Docker Api Default "tcp://127.0.0.1:2375"
+	Bridge         string //Docker Bridge Default bridge
+	ServicesImage  string // Service Base image for example: alpine:latest
+	InitCommand    string // Init Command
+	TestCommand    string // Test Command
+	Registry       string
 	Infrastructure map[string]interface{} // Base Infrastructure for example: pgsql redis consul
 	Services       []Service
 }
@@ -67,6 +68,7 @@ func init() {
 	Config.ServicesImage = cm["ServicesImage"].(string)
 	Config.InitCommand = cm["InitCommand"].(string)
 	Config.TestCommand = cm["TestCommand"].(string)
+	Config.TestCommand = cm["Registry"].(string)
 	Config.Infrastructure = cm["Infrastructure"].(map[string]interface{})
 
 	services := cm["Services"].([]interface{})

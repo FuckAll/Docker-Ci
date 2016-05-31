@@ -6,5 +6,5 @@ import (
 )
 
 func TestCiRun(t *testing.T) {
-	CiRun()
+	CiRun("OnlyBuild", "")
 }

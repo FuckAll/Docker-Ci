@@ -1,6 +1,7 @@
 {
   "ProjectPath":"/Users/KongFu/17mei/src/github.com/wothing/17mei",
   "DockerApi":"tcp://42.96.131.96:2375",
+  "Registry":"reg.17mei.top",
   "Bridge":"bridge",
   "ServicesImage":"alpine:latest",
   "InitCommand":"make rs && make ve",

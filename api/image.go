@@ -19,18 +19,18 @@ func init() {
 		fmt.Println(err)
 	}
 }
-func PullImage(Repository, Registry, Tag string) error {
-	auth, err := AuthFromDockercfg()
-	if err != nil {
-		return err
-	}
-	fmt.Println(auth.Configs[Registry])
-	err = client.PullImage(docker.PullImageOptions{Repository: Repository, Registry: Registry, Tag: Tag}, auth.Configs[Registry])
-	if err != nil {
-		return err
-	}
-	return nil
-}
+
+//func PullImage(Repository, Registry, Tag string) error {
+//auth, err := AuthFromDockercfg()
+//if err != nil {
+//return err
+//}
+//err = client.PullImage(docker.PullImageOptions{Repository: Repository, Registry: Registry, Tag: Tag}, auth.Configs[Registry])
+//if err != nil {
+//return err
+//}
+//return nil
+//}
 
 func ListImages(All bool) error {
 	images, err := client.ListImages(docker.ListImagesOptions{All: true})
@@ -83,6 +83,22 @@ func BuildImage(Name, Dockerfile, ContextDir string, Pull, NoCache, ForceRmTmpCo
 	err := client.BuildImage(opts)
 	if err != nil {
 		fmt.Println(err)
+		return err
+	}
+	return nil
+}
+
+func PushImage(Name, Tag, Registry string) error {
+	var buf bytes.Buffer
+	opts := docker.PushImageOptions{
+		Name:              Name,
+		Tag:               Tag,
+		Registry:          Registry,
+		OutputStream:      &buf,
+		InactivityTimeout: 20,
+	}
+	err := client.PushImage(opts, docker.AuthConfiguration{})
+	if err != nil {
 		return err
 	}
 	return nil
