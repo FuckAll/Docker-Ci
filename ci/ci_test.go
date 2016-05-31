@@ -6,5 +6,6 @@ import (
 )
 
 func TestCiRun(t *testing.T) {
-	CiRun("OnlyBuild", "")
+	//CiRun("OnlyBuild", "663d2166")
+	CiRun("Push", "663d2166")
 }

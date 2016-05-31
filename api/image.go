@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"fmt"
+	"time"
 
 	"github.com/fsouza/go-dockerclient"
 	"github.com/wothing/log"
@@ -20,17 +21,14 @@ func init() {
 	}
 }
 
-//func PullImage(Repository, Registry, Tag string) error {
-//auth, err := AuthFromDockercfg()
-//if err != nil {
-//return err
-//}
-//err = client.PullImage(docker.PullImageOptions{Repository: Repository, Registry: Registry, Tag: Tag}, auth.Configs[Registry])
-//if err != nil {
-//return err
-//}
-//return nil
-//}
+func PullImage(Repository, Registry, Tag string) error {
+	auth, err := AuthFromDockercfg()
+	err = client.PullImage(docker.PullImageOptions{Repository: Repository, Registry: Registry, Tag: Tag}, auth.Configs[Registry])
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func ListImages(All bool) error {
 	images, err := client.ListImages(docker.ListImagesOptions{All: true})
@@ -95,9 +93,15 @@ func PushImage(Name, Tag, Registry string) error {
 		Tag:               Tag,
 		Registry:          Registry,
 		OutputStream:      &buf,
-		InactivityTimeout: 20,
+		InactivityTimeout: time.Second * 100,
 	}
-	err := client.PushImage(opts, docker.AuthConfiguration{})
+	auth, err := AuthFromDockercfg()
+	if err != nil {
+		return err
+	}
+	fmt.Println(auth.Configs[Registry].Username)
+	fmt.Println(auth.Configs[Registry].Password)
+	err = client.PushImage(opts, auth.Configs[Registry])
 	if err != nil {
 		return err
 	}

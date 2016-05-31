@@ -68,7 +68,7 @@ func init() {
 	Config.ServicesImage = cm["ServicesImage"].(string)
 	Config.InitCommand = cm["InitCommand"].(string)
 	Config.TestCommand = cm["TestCommand"].(string)
-	Config.TestCommand = cm["Registry"].(string)
+	Config.Registry = cm["Registry"].(string)
 	Config.Infrastructure = cm["Infrastructure"].(map[string]interface{})
 
 	services := cm["Services"].([]interface{})
