@@ -108,6 +108,15 @@ func PushImage(Name, Tag, Registry string) error {
 	return nil
 }
 
-func ChangeTag(Repo, Tag, Name string) {
-	err := client.TagImage
+func ChangeTag(Repo, Tag, Name string) error {
+	opts := docker.TagImageOptions{
+		Repo:  Repo,
+		Tag:   Tag,
+		Force: true,
+	}
+	err := client.TagImage(Name, opts)
+	if err != nil {
+		return err
+	}
+	return nil
 }

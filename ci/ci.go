@@ -100,13 +100,23 @@ func CiTestAppClean() {
 }
 
 func CiPush(traceId string) {
+	// 修改镜像Tag --> Push到Repo --> 删除旧镜像
+	Registry := conf.Config.Registry
 	for _, service := range conf.Config.Services {
-		Registry := conf.Config.Registry
-		name := Registry + "/" + traceId + "-" + service.Name
-		err := api.PushImage(name, "latest", Registry)
+		Name := traceId + "-" + service.Name
+		Repo := Registry + "/" + Name
+		Tag := traceId
+		err := api.ChangeTag(Repo, Tag, Name)
 		if err != nil {
-			log.Tfatalf(conf.Tracer, "Push Images Error: %s", err)
+			log.Tfatalf(conf.Tracer, "Ci CiPush ChangeTag  Error: %s", err)
 		}
-
+		err = api.PushImage(Repo, Tag, Registry)
+		if err != nil {
+			log.Tfatalf(conf.Tracer, "Ci CiPush PushImage  Error: %s", err)
+		}
+		err = api.RemoveImage(Name)
+		if err != nil {
+			log.Tfatalf(conf.Tracer, "Ci CiPush RemoveImage Error: %s", err)
+		}
 	}
 }

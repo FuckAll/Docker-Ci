@@ -16,13 +16,13 @@ import (
 //}
 //}
 // Exist Image
-func TestExistImage(t *testing.T) {
-	imagename := "41d33f60-statist"
-	fmt.Println(ExistImage(imagename))
-	//if ListImages(false) != nil {
-	//fmt.Println("TestListImage Error")
-	//}
-}
+//func TestExistImage(t *testing.T) {
+//imagename := "41d33f60-statist"
+//fmt.Println(ExistImage(imagename))
+//if ListImages(false) != nil {
+//fmt.Println("TestListImage Error")
+//}
+//}
 
 // Pull Image
 //func TestPullImage(t *testing.T) {
@@ -183,3 +183,14 @@ func TestExistImage(t *testing.T) {
 //bl := VolumeExist("test")
 //fmt.Println(bl)
 //}
+
+// Change Tag
+func TestChangeTag(t *testing.T) {
+	Name := "663d2166-version"
+	Repo := "reg.17mei.top" + "/" + Name
+	Tag := "new"
+	err := ChangeTag(Repo, Tag, Name)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
