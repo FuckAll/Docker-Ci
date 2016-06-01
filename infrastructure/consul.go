@@ -10,7 +10,6 @@ package infrastructure
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/wothing/log"
@@ -135,7 +134,6 @@ func ConsulRegister() error {
 		port := service.Env["P"].(string)
 		//p, _ := strconv.Atoi(port)
 		jsonStr := []byte(`{"Name":"` + service.Name + `", "Port":` + port + `, "Address":"` + conf.Tracer + "-" + service.Name + `"}`)
-		fmt.Println(string(jsonStr))
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 		resp, err := client.Do(req)
 		if err != nil {

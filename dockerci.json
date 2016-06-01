@@ -1,11 +1,11 @@
 {
   "ProjectPath":"/Users/KongFu/17mei/src/github.com/wothing/17mei",
-  "DockerApi":"tcp://local.docker:2375",
+  "DockerApi":"tcp://192.168.64.3:2375",
   "Bridge":"test",
   "Registry":"reg.17mei.top",
   "ServicesImage":"alpine:latest",
   "InitCommand":"make idl && make ve",
-  "TestCommand":"CGO_ENABLED=0 go test -c -o testbin gateway/tests/*.go && TestEnv=CI CiTracer=%s ./testbin -test.v ",
+  "TestCommand":"TestEnv=CI CiTracer=%s go test -test.v gateway/tests/*.go",
   "Infrastructure": {
           "redis": {"name":"redis", "image":"redis","passwd":"wothing","init":"xxx.sh"},
           "pgsql": {"name":"pgsql", "image":"postgres", "passwd":"wothing","dname":"meidb","duser":"postgres","init": "sql/v1.0,sql/v1.1,sql/v1.2"},
@@ -362,6 +362,26 @@
         }
     },
     {
+      "Name": "payment",
+      "DockerFile": {
+              "CopyTo":"/payment",
+              "CMD":"/payment -ch $CH -cp $CP -ss $SS -dh $DH -dn $DN -dp $DP -dpwd $DPWD -du $DU -p $P"
+      },
+      "BuildCommand":"cd payment;GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
+      "Env":{
+          "CH":"consul",
+          "CP":"8600",
+          "SS":".service.dc1.consul",
+          "DH":"pgsql",
+          "DN":"meidb",
+          "DP":"5432",
+          "DPWD":"wothing",
+          "DU":"postgres",
+          "P":"3000"
+        }
+    },
+
+    {
       "Name": "appway",
       "DockerFile": {
               "CopyTo":"/appway",
@@ -398,9 +418,23 @@
           "CERT":"17mei.crt",
           "KEY":"17mei.key"
         }
+    },
+   {
+      "Name": "hospway",
+      "DockerFile": {
+              "CopyTo":"/hospway",
+              "CMD":"/hospway -cert $CERT -key $KEY -ch $CH -cp $CP -p $P -ss $SS"
+      },
+      "BuildCommand":"cd gateway/hospway;GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go install",
+      "Env":{
+          "CH":"consul",
+          "CP":"8600",
+          "SS":".service.dc1.consul",
+          "P":"3000",
+          "CERT":"17mei.crt",
+          "KEY":"17mei.key"
+        }
     }
-
-       
     ]
       
 }

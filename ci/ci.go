@@ -9,6 +9,7 @@ package ci
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/build"
@@ -73,6 +74,7 @@ func CiTestAppNoClean() {
 		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
 	//3. 启动业务代码容器
+	time.Sleep(10 * time.Second)
 	err = container.StartApp()
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartApp Error: %s", err)
@@ -104,6 +106,7 @@ func CiTestAppClean() {
 		log.Tfatalf(conf.Tracer, "Ci StartApp Error: %s", err)
 	}
 	//4. 测试
+	time.Sleep(10 * time.Second)
 	test.TestApp()
 	//5. Clean App
 	err = container.RemoveAppContainer()

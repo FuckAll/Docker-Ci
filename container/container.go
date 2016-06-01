@@ -1,13 +1,7 @@
 package container
 
 import (
-	//	"bytes"
-	//	"errors"
-	"fmt"
-	//	"os"
-	//	"os/exec"
-	//	"time"
-
+	"errors"
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/conf"
 )
@@ -51,7 +45,6 @@ func CreateAppContainer() error {
 			default:
 				tmp = k + "=" + v.(string)
 			}
-			fmt.Println(tmp)
 			env = append(env, tmp)
 		}
 		if !api.ExistImage(imageName) {

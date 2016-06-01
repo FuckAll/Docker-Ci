@@ -39,7 +39,7 @@ func init() {
 
 func CMD(order string) (string, error) {
 	log.Tinfof(conf.Tracer, "CMD: %s", order)
-	cmd := exec.Command("sh")
+	cmd := exec.Command("bash")
 
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
@@ -54,6 +54,7 @@ func CMD(order string) (string, error) {
 	err := cmd.Run()
 	if err != nil {
 		log.Infof(conf.Tracer, "%s --> %s, CMD STDERR --> %s\n", order, err.Error(), stderr.String())
+		log.Infof(conf.Tracer, "Stdout: %s", stdout.String())
 		return stderr.String(), err
 	}
 	return stdout.String(), nil

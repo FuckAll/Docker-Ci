@@ -16,7 +16,7 @@ func BuildImage() {
 		filename := service.Name + "-DockerFile"
 		err := api.BuildImage(imageName, filename, GoPath, false, false, false)
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 
 	}
@@ -38,7 +38,7 @@ func CreateDockerFile() {
 		}
 		file.WriteString(fmt.Sprintln(`FROM` + ` ` + conf.Config.ServicesImage))
 		file.WriteString(fmt.Sprintln(`COPY ` + service.Name + ` ` + destanition.(string)))
-		if service.Name != "appway" && service.Name != "interway" {
+		if service.Name != "appway" && service.Name != "interway" && service.Name != "hospway" {
 			file.WriteString(`CMD ` + string(cmd.(string)))
 			file.Close()
 		} else {
