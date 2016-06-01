@@ -8,32 +8,42 @@
 package main
 
 import (
-	"sync"
-
+	"flag"
 	"github.com/FuckAll/Docker-Ci/ci"
-	_ "github.com/FuckAll/Docker-Ci/conf"
+	"github.com/wothing/log"
 )
 
-type StageFunc func() error
-
-var wg = &sync.WaitGroup{}
-var gofunc = func(foo StageFunc) {
-	defer wg.Done()
-	foo()
-}
+var (
+	onlyBuild   = flag.Bool("onlybuild", false, "only build app and image")
+	testClean   = flag.Bool("testclean", false, "build test clean container")
+	testNoClean = flag.Bool("testnoclean", false, "build test no clean container")
+	push        = flag.Bool("push", false, "push image to repo")
+	traceId     = flag.String("tid", "", "traceId for push")
+	tag         = flag.String("tag", "", "image tag for push")
+)
 
 func main() {
-	wg.Add(3)
-	go gofunc(ci.Redis)
-	go gofunc(ci.Pgsql)
-	go gofunc(ci.Consul)
-	wg.Wait()
-	var err error
-	if err = ci.AppBuild(); err != nil {
-		ci.Clean()
+	flag.Parse()
+	if *testClean {
+		ci.CiRun("TestClean", "")
+		return
 	}
-	if err = ci.AppTest(); err != nil {
-		ci.Clean()
+	if *testNoClean {
+		ci.CiRun("TestNoClean", "")
+		return
 	}
-	ci.Clean()
+	if *onlyBuild {
+		ci.CiRun("OnlyBuild", "")
+		return
+	}
+	if *push {
+		if *traceId == "" {
+			log.Fatal("TraceId is Empty!")
+		}
+		if *tag == "" {
+			log.Fatal("Tag is Empty!")
+		}
+		ci.CiRun("Push", *traceId, *tag)
+		return
+	}
 }

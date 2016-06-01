@@ -9,7 +9,6 @@ package conf
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 
 	"github.com/pborman/uuid"
@@ -83,6 +82,5 @@ func init() {
 		Config.Services = append(Config.Services, s)
 
 	}
-	fmt.Println(Config)
 	log.Tinfo(Tracer, "load dockerci.json succeed")
 }

@@ -15,25 +15,33 @@ import (
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/FuckAll/Docker-Ci/container"
 	"github.com/FuckAll/Docker-Ci/infrastructure"
+	"github.com/FuckAll/Docker-Ci/test"
 	"github.com/wothing/log"
 )
 
-func CiRun(step, traceId string) {
+func CiRun(step string, args ...string) {
 	switch step {
 	case "OnlyBuild":
+		log.Tinfo(conf.Tracer, "OnlyBuild Start!")
 		CiBuildApp()
+		log.Tinfo(conf.Tracer, "OnlyBuild Complate!")
 	case "TestClean":
+		log.Tinfo(conf.Tracer, "TestClean Start!")
 		CiTestAppClean()
+		log.Tinfo(conf.Tracer, "TestClean Complate!")
 	case "TestNoClean":
+		log.Tinfo(conf.Tracer, "TestNoClean Start!")
 		CiTestAppNoClean()
-		fmt.Println("Clean Complate")
+		log.Tinfo(conf.Tracer, "TestNoClean Complate!")
 	case "Push":
-		if traceId == "" {
-			log.Tfatal(conf.Tracer, "PushImage Cant't Get TraceId")
+		log.Tinfo(conf.Tracer, "Push Start!")
+		if len(args) < 2 {
+			log.Tfatal(conf.Tracer, "PushImage Cant't Get TraceId And Tag")
 		}
-		CiPush(traceId)
+		CiPush(args[0], args[1])
+		log.Tinfo(conf.Tracer, "Push Complate!")
 	default:
-		fmt.Println("CiRun Complate!")
+		fmt.Println("CiRun Do Nothing!!!")
 	}
 }
 
@@ -70,6 +78,7 @@ func CiTestAppNoClean() {
 		log.Tfatalf(conf.Tracer, "Ci StartApp Error: %s", err)
 	}
 	//4. 测试
+	test.TestApp()
 
 }
 
@@ -95,17 +104,22 @@ func CiTestAppClean() {
 		log.Tfatalf(conf.Tracer, "Ci StartApp Error: %s", err)
 	}
 	//4. 测试
-	//5. Clean
+	test.TestApp()
+	//5. Clean App
+	err = container.RemoveAppContainer()
+	if err != nil {
+		log.Tfatalf(conf.Tracer, "Ci CleanConta Error: %s", err)
+	}
 
 }
 
-func CiPush(traceId string) {
+func CiPush(traceId, tag string) {
 	// 修改镜像Tag --> Push到Repo --> 删除旧镜像
 	Registry := conf.Config.Registry
 	for _, service := range conf.Config.Services {
 		Name := traceId + "-" + service.Name
 		Repo := Registry + "/" + Name
-		Tag := traceId
+		Tag := tag
 		err := api.ChangeTag(Repo, Tag, Name)
 		if err != nil {
 			log.Tfatalf(conf.Tracer, "Ci CiPush ChangeTag  Error: %s", err)

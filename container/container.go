@@ -54,10 +54,9 @@ func CreateAppContainer() error {
 			fmt.Println(tmp)
 			env = append(env, tmp)
 		}
-		fmt.Println("--------------------")
-		//if !api.ExistImage(imageName) {
-		//	return errors.New("CreateImages ExistImage Error")
-		//}
+		if !api.ExistImage(imageName) {
+			return errors.New("CreateImages ExistImage Error")
+		}
 		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"}, env...)
 		if err != nil {
 			return err
@@ -89,7 +88,7 @@ func StopAppContainer() error {
 	return nil
 }
 
-func RemoveAppContrainer() error {
+func RemoveAppContainer() error {
 	for _, containerId := range AppContainerIds {
 		err := api.RemoveContainer(containerId, false)
 		if err != nil {

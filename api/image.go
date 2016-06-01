@@ -5,19 +5,18 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/fsouza/go-dockerclient"
 	"github.com/wothing/log"
 )
-
-var endpoint = "tcp://192.168.64.3:2375"
 
 var client *docker.Client
 
 func init() {
 	var err error
-	client, err = docker.NewClient(endpoint)
+	client, err = docker.NewClient(conf.Config.DockerApi)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 }
 
