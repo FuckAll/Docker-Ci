@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/fsouza/go-dockerclient"
 )
 
@@ -29,7 +28,6 @@ func CreateNetwork(Name string) (string, error) {
 func ConnectNetwork(Id string) error {
 	err := client.ConnectNetwork(Id, docker.NetworkConnectionOptions{})
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 	return nil
@@ -38,7 +36,6 @@ func ConnectNetwork(Id string) error {
 func NetworkExist(Name string) bool {
 	networks, err := ListNetwork()
 	if err != nil {
-		fmt.Println("NetworkExist Error")
 		return false
 	}
 	for _, net := range networks {

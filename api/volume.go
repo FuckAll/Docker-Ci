@@ -1,14 +1,12 @@
 package api
 
 import (
-	"fmt"
 	"github.com/fsouza/go-dockerclient"
 )
 
 func ListVolumes(opts docker.ListVolumesOptions) ([]docker.Volume, error) {
 	volumes, err := client.ListVolumes(opts)
 	if err != nil {
-		fmt.Println(err)
 		return []docker.Volume{}, err
 	}
 	return volumes, err
@@ -20,7 +18,6 @@ func CreateVolume(name string) (string, error) {
 	}
 	volume, err := client.CreateVolume(opts)
 	if err != nil {
-		fmt.Println(err)
 		return "", nil
 
 	}
@@ -30,7 +27,6 @@ func CreateVolume(name string) (string, error) {
 func RemoveVolume(name string) error {
 	err := client.RemoveVolume(name)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 	return nil
@@ -39,7 +35,6 @@ func RemoveVolume(name string) error {
 func VolumeExist(name string) bool {
 	volumes, err := ListVolumes(docker.ListVolumesOptions{})
 	if err != nil {
-		fmt.Println(err)
 		return false
 	}
 	for _, v := range volumes {

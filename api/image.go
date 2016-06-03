@@ -48,7 +48,6 @@ func ExistImage(imageName string) bool {
 	}
 	for _, image := range images {
 		for _, repotage := range image.RepoTags {
-			fmt.Println(repotage)
 			if imageName == repotage {
 				return true
 			}
@@ -79,7 +78,6 @@ func BuildImage(Name, Dockerfile, ContextDir string, Pull, NoCache, ForceRmTmpCo
 	}
 	err := client.BuildImage(opts)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 	return nil
@@ -96,7 +94,6 @@ func PushImage(Name, Tag, Registry string) error {
 		InactivityTimeout: time.Second * 100,
 	}
 	auth, err := AuthFromDockercfg()
-	fmt.Println(opts)
 	if err != nil {
 		return err
 	}
