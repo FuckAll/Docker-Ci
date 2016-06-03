@@ -121,7 +121,7 @@ func CiPush(traceId, tag string) {
 	Registry := conf.Config.Registry
 	for _, service := range conf.Config.Services {
 		Name := traceId + "-" + service.Name
-		Repo := Registry + "/" + Name
+		Repo := Registry + "/" + service.Name + "/" + Name
 		Tag := tag
 		err := api.ChangeTag(Repo, Tag, Name)
 		if err != nil {
