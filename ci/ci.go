@@ -85,6 +85,7 @@ func CiTestAppNoClean() {
 }
 
 func CiTestAppClean() {
+	// 1. 构建镜像
 	CiBuildApp()
 	//2. 启动基础服务，例如：pgsql redis consul
 	err := infrastructure.StartConsul()
