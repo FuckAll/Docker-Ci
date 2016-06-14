@@ -47,19 +47,25 @@ import (
 
 //}
 
-func TestPostgresStart(t *testing.T) {
-	err := StartPostgres()
+//func TestPostgresStart(t *testing.T) {
+//err := StartPostgres()
+//if err != nil {
+//fmt.Println(err)
+//	}
+//err := CreatePostgresContainer()
+//if err != nil {
+//fmt.Println(err)
+//}
+//err = StartPostgresContainer()
+//if err != nil {
+//fmt.Println(err)
+//}
+//}
+func TestEtcdStart(t *testing.T) {
+	err := StartEtcd()
 	if err != nil {
 		fmt.Println(err)
 	}
-	//err := CreatePostgresContainer()
-	//if err != nil {
-	//fmt.Println(err)
-	//}
-	//err = StartPostgresContainer()
-	//if err != nil {
-	//fmt.Println(err)
-	//}
 }
 
 //func TestPostgresStop(t *testing.T) {

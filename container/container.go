@@ -40,7 +40,7 @@ func CreateAppContainer() error {
 		for k, v := range service.Env {
 			var tmp string
 			switch k {
-			case "SVC_CONSUL_SERVICE_HOST", "SVC_REDIS_SERVICE_HOST", "SVC_PGSQL_SERVICE_HOST":
+			case "ETCD", "SVC_REDIS_SERVICE_HOST", "SVC_PGSQL_SERVICE_HOST":
 				tmp = k + "=" + conf.Tracer + "-" + v.(string)
 			default:
 				tmp = k + "=" + v.(string)

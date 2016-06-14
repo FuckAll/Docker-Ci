@@ -59,10 +59,14 @@ func CiBuildApp() {
 func CiTestAppNoClean() {
 	// 1. 构建镜像
 	CiBuildApp()
-	// 2. 启动基础服务，例如：pgsql redis consul
-	err := infrastructure.StartConsul()
+	// 2. 启动基础服务，例如：pgsql redis etcd
+	//	err := infrastructure.StartConsul()
+	//if err != nil {
+	//log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
+	//	}
+	err := infrastructure.StartEtcd()
 	if err != nil {
-		log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
+		log.Tfatal(conf.Tracer, "Ci StartEtcd Error: %s", err)
 	}
 	err = infrastructure.StartRedis()
 
@@ -87,11 +91,15 @@ func CiTestAppNoClean() {
 func CiTestAppClean() {
 	// 1. 构建镜像
 	CiBuildApp()
-	//2. 启动基础服务，例如：pgsql redis consul
-	err := infrastructure.StartConsul()
+	//2. 启动基础服务，例如：pgsql redis etcd
+	err := infrastructure.StartEtcd()
 	if err != nil {
-		log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
+		log.Tfatal(conf.Tracer, "Ci StartEtcd Error: %s", err)
 	}
+	//err := infrastructure.StartConsul()
+	//if err != nil {
+	//log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
+	//}
 	err = infrastructure.StartRedis()
 
 	if err != nil {
