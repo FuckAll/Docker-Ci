@@ -52,7 +52,8 @@ func CreateAppContainer() error {
 		if !api.ExistImage(imageName) {
 			return errors.New("CreateImages ExistImage Error")
 		}
-		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"}, env...)
+		env = "HOSTNAME=" + containerName
+		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"}, env)
 		if err != nil {
 			return err
 		}
