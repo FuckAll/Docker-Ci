@@ -49,12 +49,12 @@ func CreateAppContainer() error {
 			}
 			env = append(env, tmp)
 		}
-		HOSTNAME = "HOSTNAME=" + containerName
+		HOSTNAME := "HOSTNAME=" + containerName
 		env = append(env, HOSTNAME)
 		if !api.ExistImage(imageName) {
 			return errors.New("CreateImages ExistImage Error")
 		}
-		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"}, env)
+		containerId, err := api.CreateContainer(containerName, imageName, []string{"app:/test"}, env...)
 		if err != nil {
 			return err
 		}
