@@ -18,7 +18,7 @@ var (
 	testClean   = flag.Bool("testclean", false, "build test clean container")
 	testNoClean = flag.Bool("testnoclean", false, "build test no clean container")
 	push        = flag.Bool("push", false, "push image to repo")
-	traceId     = flag.String("tid", "", "traceId for push")
+	traceID     = flag.String("tid", "", "traceId for push")
 	tag         = flag.String("tag", "", "image tag for push")
 )
 
