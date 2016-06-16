@@ -37,13 +37,13 @@ func main() {
 		return
 	}
 	if *push {
-		if *traceId == "" {
+		if *traceID == "" {
 			log.Fatal("TraceId is Empty!")
 		}
 		if *tag == "" {
 			log.Fatal("Tag is Empty!")
 		}
-		ci.CiRun("Push", *traceId, *tag)
+		ci.CiRun("Push", *traceID, *tag)
 		return
 	}
 }

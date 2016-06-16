@@ -42,8 +42,6 @@ func CreateAppContainer() error {
 			switch k {
 			case "ETCD":
 				tmp = k + "=" + "http://" + conf.Tracer + "-" + v.(string) + ":2379"
-			case "SVC_REDIS_SERVICE_HOST", "SVC_PGSQL_SERVICE_HOST":
-				tmp = k + "=" + conf.Tracer + "-" + v.(string)
 			default:
 				tmp = k + "=" + v.(string)
 			}
