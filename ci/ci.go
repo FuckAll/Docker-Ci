@@ -118,11 +118,27 @@ func CiTestAppClean() {
 	time.Sleep(10 * time.Second)
 	test.TestApp()
 	//5. Clean App
+	err = container.StopApp()
+	if err != nil {
+		log.Tfatalf(conf.Tracer, "Ci StopApp Error: %s", err)
+	}
 	err = container.RemoveAppContainer()
 	if err != nil {
-		log.Tfatalf(conf.Tracer, "Ci CleanConta Error: %s", err)
+		log.Tfatalf(conf.Tracer, "Ci CleanContainer Error: %s", err)
 	}
+	err = infrastructure.StopPostgres()
+	if err != nil {
+		log.Tfatalf(conf.Tracer, "StopPostgresContainer Error:%s", err)
+	}
+	err = infrastructure.StopRedis()
+	if err != nil {
+		log.Tfatal(conf.Tracer, "StopReisContainer Error:%s", err)
 
+	}
+	err = infrastructure.StopEtcd()
+	if err != nil {
+		log.Tfatal(conf.Tracer, "RemoveReisContainer Error:%s", err)
+	}
 }
 
 func CiPush(traceId, tag string) {

@@ -73,6 +73,18 @@ func StartPostgres() error {
 	return nil
 }
 
+func StopPostgres() error {
+	err := StopPostgresContainer()
+	if err != nil {
+		return err
+	}
+	err = RemovePostgresContainer()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func CreatePostgresContainer() error {
 	name := conf.Tracer + "-" + Postgres.Name
 	postgresContainerId, err := api.CreateContainer(name, Postgres.Image, []string{"app:/test"}, "POSTGRES_DB=meidb", "POSTGRES_PASSWORD=wothing")

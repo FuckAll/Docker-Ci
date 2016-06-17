@@ -45,6 +45,18 @@ func StartRedis() error {
 
 }
 
+func StopRedis() error {
+	err := StopRedisContainer()
+	if err != nil {
+		return err
+	}
+	err = RemoveRedisContainer()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func CreateRedisContainer() error {
 	name := conf.Tracer + "-" + Redis.Name
 	passwd := "REDIS_PASS=" + Redis.Passwd
