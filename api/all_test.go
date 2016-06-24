@@ -63,18 +63,18 @@ import (
 //}
 
 //Create Network
-//func TestCreateNetwork(t *testing.T) {
-//if fi := NetworkExist("test"); !fi {
-//name, err := CreateNetwork("test")
-//if err != nil {
-//fmt.Println("TestCreateNetwork Error")
-//fmt.Println(err)
-//}
-//fmt.Println("CreateNetwork Name:", name)
-//} else {
-//fmt.Println("CreateNetwork Complate")
-//}
-//}
+func TestCreateNetwork(t *testing.T) {
+	if fi := NetworkExist("test1"); !fi {
+		name, err := CreateNetwork("test1")
+		if err != nil {
+		fmt.Println("TestCreateNetwork Error")
+		fmt.Println(err)
+	}
+	fmt.Println("CreateNetwork Name:", name)
+	} else {
+		fmt.Println("CreateNetwork Complate")
+	}
+}
 
 // Network Exist
 //func TestNetworkExist(t *testing.T) {
@@ -185,12 +185,14 @@ import (
 //}
 
 // Change Tag
-func TestChangeTag(t *testing.T) {
-	Name := "663d2166-version"
-	Repo := "reg.17mei.top" + "/" + Name
-	Tag := "new"
-	err := ChangeTag(Repo, Tag, Name)
-	if err != nil {
-		fmt.Println(err)
-	}
-}
+//func TestChangeTag(t *testing.T) {
+//	Name := "663d2166-version"
+//	Repo := "reg.17mei.top" + "/" + Name
+//	Tag := "new"
+//	err := ChangeTag(Repo, Tag, Name)
+//	if err != nil {
+//		fmt.Println(err)
+//	}
+//}
+
+

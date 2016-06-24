@@ -21,6 +21,7 @@ import (
 )
 
 func CiRun(step string, args ...string) {
+	prepare()
 	switch step {
 	case "OnlyBuild":
 		log.Tinfo(conf.Tracer, "OnlyBuild Start!")
@@ -43,6 +44,18 @@ func CiRun(step string, args ...string) {
 		log.Tinfo(conf.Tracer, "Push Complate!")
 	default:
 		fmt.Println("CiRun Do Nothing!!!")
+	}
+}
+
+
+func prepare() {
+	if fi:= api.NetworkExist("test"); !fi {
+		_, err:= api.Create("test")
+		if err != nil{
+			log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
+		}
+	}else {
+		log.Tinfo("Prepare ready!!!")
 	}
 }
 
