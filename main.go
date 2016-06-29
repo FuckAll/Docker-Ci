@@ -13,10 +13,11 @@ import (
 	"github.com/FuckAll/Docker-Ci/ci"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/wothing/log"
+	"strings"
 )
 
 var (
-	onlyBuild   = flag.Bool("onlybuild", false, "only build app and image")
+	onlyBuild   = flag.String("onlybuild", "", "only build app and image")
 	testClean   = flag.Bool("testclean", false, "build test clean container")
 	testNoClean = flag.Bool("testnoclean", false, "build test no clean container")
 	push        = flag.Bool("push", false, "push image to repo")
@@ -27,14 +28,19 @@ var (
 func main() {
 	pre := `Docker-Ci Is A Tool Used to Build Docker Image And Push To Registry 
                Example:
+
                         1. Test All And Keep Docker Container
                           ./Docker-Ci -testnoclean 
+
                         2. Test All And Clean Docker Container
                           ./Docker-Ci -testclean  
+
                         3. ReBuild All Images
-                          ./Docker-Ci -onlybuild -tid 663d2166
+                          ./Docker-Ci -onlybuild [-tid 663d2166]
+
                         4. Build Some Images
-                          ./Docker-Ci -onlybuild appway interway -tid 663d2166`
+                          ./Docker-Ci -onlybuild appway interway -tid 663d2166
+               `
 	fmt.Println(pre)
 	flag.Parse()
 	if *testClean {
@@ -45,24 +51,21 @@ func main() {
 		ci.CiRun("TestNoClean", "")
 		return
 	}
-	if *onlyBuild {
+	if *onlyBuild != "" {
 		//如果单独的build某些微服务，是需要指定tid,否则会造成版本的错乱导致，无法测试
-		app := flag.Args()
-		if *traceID != "" {
-			conf.Trace = *traceID
-		}
+		app := strings.Split(*onlyBuild, ",")
 		if len(app) > 0 {
 			if *traceID != "" {
-				conf.Trace = *traceID
+				conf.Tracer = *traceID
 			} else {
-				log.Tfatal(conf.Trace, "TraceId is Empty!")
+				log.Tfatal(conf.Tracer, "TraceId is Empty!")
 			}
 			ci.CiRun("OnlyBuild", app...)
 		} else {
 			if *traceID != "" {
-				conf.Trace = *traceID
+				conf.Tracer = *traceID
 			}
-			ci.CiRun("OnlyBuild", "")
+			ci.CiRun("OnlyBuild")
 		}
 
 		return
@@ -74,7 +77,7 @@ func main() {
 		if *tag == "" {
 			log.Fatal("Tag is Empty!")
 		}
-		conf.Trace = *traceID
+		conf.Tracer = *traceID
 		ci.CiRun("Push", *tag)
 		return
 	}

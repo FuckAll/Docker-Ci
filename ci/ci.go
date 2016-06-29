@@ -62,6 +62,7 @@ func prepare() {
 func CiBuildApp(args ...string) {
 	//如果OnlyBuild 没有任何的参数就全部Build一遍
 	if len(args) < 1 {
+		fmt.Println("good")
 		_, err := build.BuildApp()
 		if err != nil {
 			log.Tfatalf(conf.Tracer, "BuildApp Error: %s", err)
@@ -71,8 +72,8 @@ func CiBuildApp(args ...string) {
 	} else {
 		// 如果有参数就只Build指定的一些
 		newservice := []conf.Service{}
-		for i := range conf.Config.Services {
-			for name := range args[1:len(args)] {
+		for _, i := range conf.Config.Services {
+			for _, name := range args {
 				if name == i.Name {
 					newservice = append(newservice, i)
 				}
