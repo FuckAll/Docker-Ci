@@ -9,7 +9,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/FuckAll/Docker-Ci/ci"
+	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/wothing/log"
 )
 
@@ -23,6 +25,17 @@ var (
 )
 
 func main() {
+	pre := `Docker-Ci Is A Tool Used to Build Docker Image And Push To Registry 
+               Example:
+                        1. Test All And Keep Docker Container
+                          ./Docker-Ci -testnoclean 
+                        2. Test All And Clean Docker Container
+                          ./Docker-Ci -testclean  
+                        3. ReBuild All Images
+                          ./Docker-Ci -onlybuild -tid 663d2166
+                        4. Build Some Images
+                          ./Docker-Ci -onlybuild appway interway -tid 663d2166`
+	fmt.Println(pre)
 	flag.Parse()
 	if *testClean {
 		ci.CiRun("TestClean", "")
@@ -33,13 +46,22 @@ func main() {
 		return
 	}
 	if *onlyBuild {
+		//如果单独的build某些微服务，是需要指定tid,否则会造成版本的错乱导致，无法测试
 		app := flag.Args()
+		if *traceID != "" {
+			conf.Trace = *traceID
+		}
 		if len(app) > 0 {
-			if *traceID == "" {
-				log.Fatal("TraceId is Empty!")
+			if *traceID != "" {
+				conf.Trace = *traceID
+			} else {
+				log.Tfatal(conf.Trace, "TraceId is Empty!")
 			}
-			ci.CiRun("OnlyBuild", *traceID, app...)
+			ci.CiRun("OnlyBuild", app...)
 		} else {
+			if *traceID != "" {
+				conf.Trace = *traceID
+			}
 			ci.CiRun("OnlyBuild", "")
 		}
 
@@ -52,7 +74,8 @@ func main() {
 		if *tag == "" {
 			log.Fatal("Tag is Empty!")
 		}
-		ci.CiRun("Push", *traceID, *tag)
+		conf.Trace = *traceID
+		ci.CiRun("Push", *tag)
 		return
 	}
 }

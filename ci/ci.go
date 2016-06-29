@@ -37,10 +37,10 @@ func CiRun(step string, args ...string) {
 		log.Tinfo(conf.Tracer, "TestNoClean Complate!")
 	case "Push":
 		log.Tinfo(conf.Tracer, "Push Start!")
-		if len(args) < 2 {
+		if len(args) < 1 {
 			log.Tfatal(conf.Tracer, "PushImage Cant't Get TraceId And Tag")
 		}
-		CiPush(args[0], args[1])
+		CiPush(conf.Tracer, args[0])
 		log.Tinfo(conf.Tracer, "Push Complate!")
 	default:
 		fmt.Println("CiRun Do Nothing!!!")
@@ -70,7 +70,6 @@ func CiBuildApp(args ...string) {
 	} else {
 		// 如果有参数就只Build指定的一些
 		newservice := []conf.Service{}
-		conf.Tracer = args[0]
 		for i := range conf.Config.Services {
 			for name := range args[1:len(args)] {
 				if name == i.Name {
@@ -79,6 +78,10 @@ func CiBuildApp(args ...string) {
 			}
 		}
 		conf.Config.Services = newservice
+		_, err := build.BuildApp()
+		if err != nil {
+			log.Tfatalf(conf.Tracer, "BuildApp Error: %s", err)
+		}
 		build.CreateDockerFile()
 		build.BuildImage()
 	}
