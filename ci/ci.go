@@ -48,8 +48,9 @@ func CiRun(step string, args ...string) {
 }
 
 func prepare() {
-	if fi := api.NetworkExist("test"); !fi {
-		_, err := api.Create("test")
+	bridge := conf.Config.Bridge
+	if fi := api.NetworkExist(bridge); !fi {
+		_, err := api.CreateNetwork(bridge)
 		if err != nil {
 			log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
 		}
