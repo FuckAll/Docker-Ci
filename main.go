@@ -33,7 +33,16 @@ func main() {
 		return
 	}
 	if *onlyBuild {
-		ci.CiRun("OnlyBuild", "")
+		app := flag.Args()
+		if len(app) > 0 {
+			if *traceID == "" {
+				log.Fatal("TraceId is Empty!")
+			}
+			ci.CiRun("OnlyBuild", *traceID, app...)
+		} else {
+			ci.CiRun("OnlyBuild", "")
+		}
+
 		return
 	}
 	if *push {

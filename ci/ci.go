@@ -25,7 +25,7 @@ func CiRun(step string, args ...string) {
 	switch step {
 	case "OnlyBuild":
 		log.Tinfo(conf.Tracer, "OnlyBuild Start!")
-		CiBuildApp()
+		CiBuildApp(args)
 		log.Tinfo(conf.Tracer, "OnlyBuild Complate!")
 	case "TestClean":
 		log.Tinfo(conf.Tracer, "TestClean Start!")
@@ -47,25 +47,41 @@ func CiRun(step string, args ...string) {
 	}
 }
 
-
 func prepare() {
-	if fi:= api.NetworkExist("test"); !fi {
-		_, err:= api.Create("test")
-		if err != nil{
+	if fi := api.NetworkExist("test"); !fi {
+		_, err := api.Create("test")
+		if err != nil {
 			log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
 		}
-	}else {
+	} else {
 		log.Tinfo("Prepare ready!!!")
 	}
 }
 
-func CiBuildApp() {
-	_, err := build.BuildApp()
-	if err != nil {
-		log.Tfatalf(conf.Tracer, "BuildApp Error: %s", err)
+func CiBuildApp(args ...string) {
+	//如果OnlyBuild 没有任何的参数就全部Build一遍
+	if len(args) < 1 {
+		_, err := build.BuildApp()
+		if err != nil {
+			log.Tfatalf(conf.Tracer, "BuildApp Error: %s", err)
+		}
+		build.CreateDockerFile()
+		build.BuildImage()
+	} else {
+		// 如果有参数就只Build指定的一些
+		newservice := []conf.Service{}
+		conf.Tracer = args[0]
+		for i := range conf.Config.Services {
+			for name := range args[1:len(args)] {
+				if name == i.Name {
+					newservice = append(newservice, i)
+				}
+			}
+		}
+		conf.Config.Services = newservice
+		build.CreateDockerFile()
+		build.BuildImage()
 	}
-	build.CreateDockerFile()
-	build.BuildImage()
 
 }
 
