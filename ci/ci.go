@@ -25,7 +25,7 @@ func CiRun(step string, args ...string) {
 	switch step {
 	case "OnlyBuild":
 		log.Tinfo(conf.Tracer, "OnlyBuild Start!")
-		CiBuildApp(args)
+		CiBuildApp(args...)
 		log.Tinfo(conf.Tracer, "OnlyBuild Complate!")
 	case "TestClean":
 		log.Tinfo(conf.Tracer, "TestClean Start!")
