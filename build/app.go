@@ -53,7 +53,7 @@ func CMD(order string) (string, error) {
 	in.WriteString(order)
 	err := cmd.Run()
 	if err != nil {
-		log.Infof(conf.Tracer, "%s --> %s, CMD STDERR --> %s\n", order, err.Error(), stderr.String())
+		log.Infof(conf.Tracer, "%v --> %v, CMD STDERR --> %v\n", order, err.Error(), stderr.String())
 		log.Infof(conf.Tracer, "Stdout: %s", stdout.String())
 		return stderr.String(), err
 	}

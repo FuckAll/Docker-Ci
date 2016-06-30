@@ -20,7 +20,7 @@ import (
 	"github.com/wothing/log"
 )
 
-func CiRun(step string, args ...string) {
+func CiRun(step string, tag string, args ...string) {
 	prepare()
 	switch step {
 	case "OnlyBuild":
@@ -38,9 +38,10 @@ func CiRun(step string, args ...string) {
 	case "Push":
 		log.Tinfo(conf.Tracer, "Push Start!")
 		if len(args) < 1 {
-			log.Tfatal(conf.Tracer, "PushImage Cant't Get TraceId And Tag")
+			CiPush(conf.Tracer, tag)
+		} else {
+			CiPush(conf.Tracer, tag, args...)
 		}
-		CiPush(conf.Tracer, args[0])
 		log.Tinfo(conf.Tracer, "Push Complate!")
 	default:
 		fmt.Println("CiRun Do Nothing!!!")
@@ -175,24 +176,37 @@ func CiTestAppClean() {
 	}
 }
 
-func CiPush(traceId, tag string) {
+func CiPush(traceId, tag string, apps ...string) {
 	// 修改镜像Tag --> Push到Repo --> 删除旧镜像
 	Registry := conf.Config.Registry
-	for _, service := range conf.Config.Services {
+	newservice := []conf.Service{}
+	if len(apps) > 0 {
+		for _, i := range conf.Config.Services {
+			for _, name := range apps {
+				if name == i.Name {
+					newservice = append(newservice, i)
+				}
+			}
+		}
+
+	} else {
+		newservice = conf.Config.Services
+	}
+	for _, service := range newservice {
 		Name := traceId + "-" + service.Name
 		Repo := Registry + "/" + service.Name + "/" + Name
 		Tag := tag
 		err := api.ChangeTag(Repo, Tag, Name)
 		if err != nil {
-			log.Tfatalf(conf.Tracer, "Ci CiPush ChangeTag  Error: %s", err)
+			log.Tfatalf(conf.Tracer, "Ci CiPush ChangeTag  Error: %v", err)
 		}
 		err = api.PushImage(Repo, Tag, Registry)
 		if err != nil {
-			log.Tfatalf(conf.Tracer, "Ci CiPush PushImage  Error: %s", err)
+			log.Tfatalf(conf.Tracer, "Ci CiPush PushImage  Error: %v", err)
 		}
 		err = api.RemoveImage(Name)
 		if err != nil {
-			log.Tfatalf(conf.Tracer, "Ci CiPush RemoveImage Error: %s", err)
+			log.Tfatalf(conf.Tracer, "Ci CiPush RemoveImage Error: %v", err)
 		}
 	}
 }

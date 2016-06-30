@@ -20,7 +20,7 @@ var (
 	onlyBuild   = flag.String("onlybuild", "", "only build app and image")
 	testClean   = flag.Bool("testclean", false, "build test clean container")
 	testNoClean = flag.Bool("testnoclean", false, "build test no clean container")
-	push        = flag.Bool("push", false, "push image to repo")
+	push        = flag.String("push", "", "push image to repo")
 	traceID     = flag.String("tid", "", "traceId for push")
 	tag         = flag.String("tag", "", "image tag for push")
 )
@@ -39,8 +39,15 @@ func main() {
                           ./Docker-Ci -onlybuild [-tid 663d2166]
 
                         4. Build Some Images
-                          ./Docker-Ci -onlybuild appway interway -tid 663d2166
-               `
+                          ./Docker-Ci -onlybuild appway,interway -tid 663d2166
+
+               		5. Push All Images To Registry
+			  ./Docker-Ci -push -tag v1.2.1 -tid 663d2166
+			
+			6. Push Some Images To Registry 
+			  ./Docker-Ci -push appway,interway -tag v1.2.1 -tid 663d2166 
+			  
+			  `
 	fmt.Println(pre)
 	flag.Parse()
 	if *testClean {
@@ -60,17 +67,18 @@ func main() {
 			} else {
 				log.Tfatal(conf.Tracer, "TraceId is Empty!")
 			}
-			ci.CiRun("OnlyBuild", app...)
+			ci.CiRun("OnlyBuild", "", app...)
 		} else {
 			if *traceID != "" {
 				conf.Tracer = *traceID
 			}
-			ci.CiRun("OnlyBuild")
+			ci.CiRun("OnlyBuild", "")
 		}
 
 		return
 	}
-	if *push {
+	if *push != "" {
+		app := strings.Split(*push, ",")
 		if *traceID == "" {
 			log.Fatal("TraceId is Empty!")
 		}
@@ -78,7 +86,11 @@ func main() {
 			log.Fatal("Tag is Empty!")
 		}
 		conf.Tracer = *traceID
-		ci.CiRun("Push", *tag)
+		if len(app) > 0 {
+			ci.CiRun("Push", *tag, app...)
+		} else {
+			ci.CiRun("Push", *tag)
+		}
 		return
 	}
 }
