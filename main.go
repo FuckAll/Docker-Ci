@@ -9,7 +9,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"github.com/FuckAll/Docker-Ci/ci"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/wothing/log"
@@ -17,38 +16,31 @@ import (
 )
 
 var (
-	onlyBuild   = flag.String("onlybuild", "", "only build app and image")
-	testClean   = flag.Bool("testclean", false, "build test clean container")
-	testNoClean = flag.Bool("testnoclean", false, "build test no clean container")
-	push        = flag.String("push", "", "push image to repo")
-	traceID     = flag.String("tid", "", "traceId for push")
-	tag         = flag.String("tag", "", "image tag for push")
+	onlyBuild = flag.String("onlybuild", "all", `
+	 1. Build All Images
+            ./Docker-Ci -onlybuild [-tid 663d2166]
+	 2. Buidl Some Images   
+	    ./Docker-Ci -onlybuild appway,interway -tid 663d2166 
+	 `)
+	testClean = flag.Bool("testclean", false, `
+	 1. Test All And Clean Docker Container
+	    ./Docker-Ci -testclean
+	 `)
+	testNoClean = flag.Bool("testnoclean", false, `
+	 1.  Test All And Keep Docker Container
+	    ./Docker-Ci -testnoclean
+	 `)
+	push = flag.String("push", "all", `
+	 1.  Push All Images To Registry
+	    ./Docker-Ci -push -tag v1.2.1 [-tid 663d2166]
+	 2. Push Some Images To Registry
+	    ./Docker-Ci -push appway,interway -tag v1.2.1 -tid 663d2166 
+	 `)
+	traceID = flag.String("tid", "", "IraceId For Push")
+	tag     = flag.String("tag", "", "Image Tag For Push")
 )
 
 func main() {
-	pre := `Docker-Ci Is A Tool Used to Build Docker Image And Push To Registry 
-               Example:
-
-                        1. Test All And Keep Docker Container
-                          ./Docker-Ci -testnoclean 
-
-                        2. Test All And Clean Docker Container
-                          ./Docker-Ci -testclean  
-
-                        3. ReBuild All Images
-                          ./Docker-Ci -onlybuild [-tid 663d2166]
-
-                        4. Build Some Images
-                          ./Docker-Ci -onlybuild appway,interway -tid 663d2166
-
-               		5. Push All Images To Registry
-			  ./Docker-Ci -push -tag v1.2.1 -tid 663d2166
-			
-			6. Push Some Images To Registry 
-			  ./Docker-Ci -push appway,interway -tag v1.2.1 -tid 663d2166 
-			  
-			  `
-	fmt.Println(pre)
 	flag.Parse()
 	if *testClean {
 		ci.CiRun("TestClean", "")
@@ -60,8 +52,8 @@ func main() {
 	}
 	if *onlyBuild != "" {
 		//如果单独的build某些微服务，是需要指定tid,否则会造成版本的错乱导致，无法测试
-		app := strings.Split(*onlyBuild, ",")
-		if len(app) > 0 {
+		if *onlyBuild != "all" {
+			app := strings.Split(*onlyBuild, ",")
 			if *traceID != "" {
 				conf.Tracer = *traceID
 			} else {
@@ -78,7 +70,6 @@ func main() {
 		return
 	}
 	if *push != "" {
-		app := strings.Split(*push, ",")
 		if *traceID == "" {
 			log.Fatal("TraceId is Empty!")
 		}
@@ -86,7 +77,8 @@ func main() {
 			log.Fatal("Tag is Empty!")
 		}
 		conf.Tracer = *traceID
-		if len(app) > 0 {
+		if *push != "all" {
+			app := strings.Split(*push, ",")
 			ci.CiRun("Push", *tag, app...)
 		} else {
 			ci.CiRun("Push", *tag)

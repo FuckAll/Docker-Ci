@@ -63,7 +63,6 @@ func prepare() {
 func CiBuildApp(args ...string) {
 	//如果OnlyBuild 没有任何的参数就全部Build一遍
 	if len(args) < 1 {
-		fmt.Println("good")
 		_, err := build.BuildApp()
 		if err != nil {
 			log.Tfatalf(conf.Tracer, "BuildApp Error: %s", err)
