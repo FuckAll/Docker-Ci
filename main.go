@@ -50,6 +50,25 @@ func main() {
 		ci.CiRun("TestNoClean", "")
 		return
 	}
+	*tag = "v1.2.2"
+	*traceID = "c6f5338f"
+	if *push != "" {
+		if *traceID == "" {
+			log.Fatal("TraceId is Empty!")
+		}
+		if *tag == "" {
+			log.Fatal("Tag is Empty!")
+		}
+		conf.Tracer = *traceID
+		if *push != "all" {
+			app := strings.Split(*push, ",")
+			ci.CiRun("Push", *tag, app...)
+		} else {
+			ci.CiRun("Push", *tag)
+		}
+		return
+	}
+
 	if *onlyBuild != "" {
 		//如果单独的build某些微服务，是需要指定tid,否则会造成版本的错乱导致，无法测试
 		if *onlyBuild != "all" {
@@ -67,22 +86,6 @@ func main() {
 			ci.CiRun("OnlyBuild", "")
 		}
 
-		return
-	}
-	if *push != "" {
-		if *traceID == "" {
-			log.Fatal("TraceId is Empty!")
-		}
-		if *tag == "" {
-			log.Fatal("Tag is Empty!")
-		}
-		conf.Tracer = *traceID
-		if *push != "all" {
-			app := strings.Split(*push, ",")
-			ci.CiRun("Push", *tag, app...)
-		} else {
-			ci.CiRun("Push", *tag)
-		}
 		return
 	}
 }

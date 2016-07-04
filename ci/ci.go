@@ -37,11 +37,11 @@ func CiRun(step string, tag string, args ...string) {
 		log.Tinfo(conf.Tracer, "TestNoClean Complate!")
 	case "Push":
 		log.Tinfo(conf.Tracer, "Push Start!")
-		if len(args) < 1 {
-			CiPush(conf.Tracer, tag)
-		} else {
-			CiPush(conf.Tracer, tag, args...)
-		}
+		//if len(args) < 1 {
+		CiPush(conf.Tracer, tag)
+		//} else {
+		//	CiPush(conf.Tracer, tag, args...)
+		//}
 		log.Tinfo(conf.Tracer, "Push Complate!")
 	default:
 		fmt.Println("CiRun Do Nothing!!!")
