@@ -16,9 +16,9 @@ import (
 )
 
 var (
-	onlyBuild = flag.String("onlybuild", "all", `
+	onlyBuild = flag.String("onlybuild", "", `
 	 1. Build All Images
-            ./Docker-Ci -onlybuild [-tid 663d2166]
+            ./Docker-Ci -onlybuild all [-tid 663d2166]
 	 2. Buidl Some Images   
 	    ./Docker-Ci -onlybuild appway,interway -tid 663d2166 
 	 `)
@@ -30,13 +30,13 @@ var (
 	 1.  Test All And Keep Docker Container
 	    ./Docker-Ci -testnoclean
 	 `)
-	push = flag.String("push", "all", `
+	push = flag.String("push", "", `
 	 1.  Push All Images To Registry
-	    ./Docker-Ci -push -tag v1.2.1 [-tid 663d2166]
+	    ./Docker-Ci -push all -tag v1.2.1 [-tid 663d2166]
 	 2. Push Some Images To Registry
 	    ./Docker-Ci -push appway,interway -tag v1.2.1 -tid 663d2166 
 	 `)
-	traceID = flag.String("tid", "", "IraceId For Push")
+	traceID = flag.String("tid", "", "TraceId For Push")
 	tag     = flag.String("tag", "", "Image Tag For Push")
 )
 
@@ -50,8 +50,6 @@ func main() {
 		ci.CiRun("TestNoClean", "")
 		return
 	}
-	*tag = "v1.2.2"
-	*traceID = "c6f5338f"
 	if *push != "" {
 		if *traceID == "" {
 			log.Fatal("TraceId is Empty!")
