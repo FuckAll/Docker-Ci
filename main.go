@@ -9,6 +9,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/FuckAll/Docker-Ci/ci"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/wothing/log"
@@ -32,7 +33,7 @@ var (
 	 `)
 	push = flag.String("push", "", `
 	 1.  Push All Images To Registry
-	    ./Docker-Ci -push all -tag v1.2.1 [-tid 663d2166]
+	    ./Docker-Ci -push all -tag v1.2.1 -tid 663d2166
 	 2. Push Some Images To Registry
 	    ./Docker-Ci -push appway,interway -tag v1.2.1 -tid 663d2166 
 	 `)
@@ -60,6 +61,7 @@ func main() {
 		conf.Tracer = *traceID
 		if *push != "all" {
 			app := strings.Split(*push, ",")
+			fmt.Println("in")
 			ci.CiRun("Push", *tag, app...)
 		} else {
 			ci.CiRun("Push", *tag)

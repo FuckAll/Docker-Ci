@@ -9,8 +9,6 @@ package ci
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/build"
 	"github.com/FuckAll/Docker-Ci/conf"
@@ -18,6 +16,7 @@ import (
 	"github.com/FuckAll/Docker-Ci/infrastructure"
 	"github.com/FuckAll/Docker-Ci/test"
 	"github.com/wothing/log"
+	"time"
 )
 
 func CiRun(step string, tag string, args ...string) {
@@ -37,11 +36,11 @@ func CiRun(step string, tag string, args ...string) {
 		log.Tinfo(conf.Tracer, "TestNoClean Complate!")
 	case "Push":
 		log.Tinfo(conf.Tracer, "Push Start!")
-		//if len(args) < 1 {
-		CiPush(conf.Tracer, tag)
-		//} else {
-		//	CiPush(conf.Tracer, tag, args...)
-		//}
+		if len(args) < 1 {
+			CiPush(conf.Tracer, tag)
+		} else {
+			CiPush(conf.Tracer, tag, args...)
+		}
 		log.Tinfo(conf.Tracer, "Push Complate!")
 	default:
 		fmt.Println("CiRun Do Nothing!!!")
@@ -111,8 +110,8 @@ func CiTestAppNoClean() {
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
+	time.Sleep(5 * time.Second)
 	//3. 启动业务代码容器
-	time.Sleep(10 * time.Second)
 	err = container.StartApp()
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartApp Error: %s", err)
@@ -143,13 +142,13 @@ func CiTestAppClean() {
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
+	time.Sleep(5 * time.Second)
 	//3. 启动业务代码容器
 	err = container.StartApp()
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartApp Error: %s", err)
 	}
 	//4. 测试
-	time.Sleep(10 * time.Second)
 	test.TestApp()
 	//5. Clean App
 	err = container.StopApp()

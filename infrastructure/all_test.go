@@ -62,6 +62,7 @@ import (
 //}
 //}
 func TestEtcdStart(t *testing.T) {
+	//err := EtcdInit()
 	err := StartEtcd()
 	if err != nil {
 		fmt.Println(err)

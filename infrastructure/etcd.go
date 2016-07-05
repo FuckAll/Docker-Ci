@@ -12,6 +12,7 @@ import (
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/coreos/go-etcd/etcd"
 	"github.com/wothing/log"
+	"time"
 )
 
 // Etcd used
@@ -45,6 +46,7 @@ func StartEtcd() error {
 	if err != nil {
 		return err
 	}
+	time.Sleep(5 * time.Second)
 	err = etcdInit()
 	if err != nil {
 		return err
