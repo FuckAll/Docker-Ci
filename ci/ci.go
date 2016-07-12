@@ -73,14 +73,13 @@ func Prepare() {
 		// Registry := "reg.17mei.top"
 		Registry := tmp[0]
 
-		// Tag := []string{"redis","latest"}
+		// ImageTag := []string{"redis","latest"}
 		ImageTag := strings.Split((tmp[len(tmp)-1]), ":")
-
-		//Repository :="reg.17mei.top/redis"
-		Repository := Registry + "/" + ImageTag[1]
-
 		//Tag := "latest"
 		Tag := ImageTag[0]
+
+		//Repository :="reg.17mei.top/redis"
+		Repository := Registry + "/" + ImageTag[0] + Tag
 
 		if err := api.PullImage(Repository, Registry, Tag); err != nil {
 			log.Tfatal(conf.Tracer, err)
