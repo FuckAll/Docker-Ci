@@ -83,17 +83,20 @@ func Prepare() {
 		Repository := Registry
 
 		if len(tmp) > 2 {
-			for _, one := range tmp[1 : len(tmp)-1] {
+			for _, one := range tmp[1:len(tmp)] {
 				Repository = Repository + "/" + one
 
 			}
+
+		} else {
+			Repository = Repository + "/" + ImageTag[0]
 
 		}
 
 		if err := api.PullImage(Repository, Registry, Tag); err != nil {
 			log.Tfatal(conf.Tracer, err)
 		}
-		log.Tinfo("Check Infrastructure Complete!")
+		log.Tinfof("Check Infrastructure %s Complete!", Repository)
 	}
 
 }
