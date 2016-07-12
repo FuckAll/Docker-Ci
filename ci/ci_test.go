@@ -6,6 +6,8 @@ import (
 )
 
 func TestCiRun(t *testing.T) {
-	CiRun("OnlyBuild", "appway")
+	// CiRun("OnlyBuild", "appway")
 	//CiRun("Push", "663d2166")
+	Prepare()
+
 }

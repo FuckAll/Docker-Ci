@@ -20,6 +20,7 @@ func init() {
 	}
 }
 
+// PullIMage Pull Image From Repository, Name was Registry,Tag is Tag
 func PullImage(Repository, Registry, Tag string) error {
 	auth, err := AuthFromDockercfg()
 	err = client.PullImage(docker.PullImageOptions{Repository: Repository, Registry: Registry, Tag: Tag}, auth.Configs[Registry])

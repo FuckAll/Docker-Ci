@@ -19,8 +19,9 @@ import (
 	"time"
 )
 
+// CiRun Run Ci Begin
 func CiRun(step string, tag string, args ...string) {
-	prepare()
+	Prepare()
 	switch step {
 	case "OnlyBuild":
 		log.Tinfo(conf.Tracer, "OnlyBuild Start!")
@@ -47,18 +48,33 @@ func CiRun(step string, tag string, args ...string) {
 	}
 }
 
-func prepare() {
-	bridge := conf.Config.Bridge
-	if fi := api.NetworkExist(bridge); !fi {
-		_, err := api.CreateNetwork(bridge)
-		if err != nil {
-			log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
-		}
-	} else {
-		log.Tinfo("Prepare ready!!!")
+// Prepare Used To Create Docekr Environment
+func Prepare() {
+	// Create NetWork Test For Docker Test
+	// bridge := conf.Config.Bridge
+	// if fi := api.NetworkExist(bridge); !fi {
+	// 	_, err := api.CreateNetwork(bridge)
+	// 	if err != nil {
+	// 		log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
+	// 	}
+	// } else {
+	// 	log.Tinfo("Prepare ready!!!")
+	// }
+	// Prepare Images
+	// for _, infra := range conf.Config.Infrastructure {
+	// 	tmp := infra.(map[string]interface{})
+	// 	image := tmp["image"].(string)
+	// 	api.PullImage("reg.17mei.top", "redis", "laste")
+
+	// 	// fmt.Println(infra.(map[string]interface{}))
+	// }
+	if err := api.PullImage("reg.17mei.top", "redis", "laste"); err != nil {
+		log.Tfatal(conf.Tracer, err)
+
 	}
 }
 
+// CiBuildApp used to Build App no test
 func CiBuildApp(args ...string) {
 	//如果OnlyBuild 没有任何的参数就全部Build一遍
 	if len(args) < 1 {
@@ -89,6 +105,7 @@ func CiBuildApp(args ...string) {
 
 }
 
+// CiTestAppNoClean Used To Test App And No Clean Docker Images
 func CiTestAppNoClean() {
 	// 1. 构建镜像
 	CiBuildApp()

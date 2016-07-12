@@ -21,6 +21,7 @@ var (
 
 var Config DockerCi
 
+//DockerCi Struct
 type DockerCi struct {
 	ProjectPath    string // This is a absolute PATH
 	DockerApi      string //Docker Api Default "tcp://127.0.0.1:2375"
@@ -33,6 +34,7 @@ type DockerCi struct {
 	Services       []Service
 }
 
+// Service Struct, Every Has A Service Struct
 type Service struct {
 	Name         string
 	DockerFile   map[string]interface{}
