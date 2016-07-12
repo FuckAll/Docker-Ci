@@ -60,9 +60,9 @@ func Prepare() {
 			log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
 		}
 	}
-	log.Tinfo("Create Network Bridge Complete!")
+	log.Tinfo(conf.Tracer, "Create Network Bridge Complete!")
 	// Prepare Images
-	log.Tinfo("Check Infrastructure Images")
+	log.Tinfo(conf.Tracer, "Check Infrastructure Images")
 	for _, infra := range conf.Config.Infrastructure {
 		// image =: reg.17mei.top/redis:latest
 		image := (infra.(map[string]interface{})["image"].(string))
@@ -96,7 +96,7 @@ func Prepare() {
 		if err := api.PullImage(Repository, Registry, Tag); err != nil {
 			log.Tfatal(conf.Tracer, err)
 		}
-		log.Tinfof("Check Infrastructure %s Complete!", Repository)
+		log.Tinfof(conf.Tracer, "Check Infrastructure %s Complete! \n", Repository)
 	}
 
 }
