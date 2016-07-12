@@ -85,7 +85,6 @@ func Prepare() {
 		if len(tmp) > 2 {
 			for _, one := range tmp[1:len(tmp)] {
 				Repository = Repository + "/" + one
-
 			}
 
 		} else {
@@ -154,7 +153,8 @@ func CiTestAppNoClean() {
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
-	time.Sleep(5 * time.Second)
+	time.Sleep(10 * time.Second)
+
 	//3. 启动业务代码容器
 	err = container.StartApp()
 	if err != nil {
@@ -186,7 +186,7 @@ func CiTestAppClean() {
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
-	time.Sleep(5 * time.Second)
+	time.Sleep(10 * time.Second)
 	//3. 启动业务代码容器
 	err = container.StartApp()
 	if err != nil {
@@ -218,6 +218,7 @@ func CiTestAppClean() {
 	}
 }
 
+// CiPush Used To Push Image To Repo
 func CiPush(traceId, tag string, apps ...string) {
 	// 修改镜像Tag --> Push到Repo --> 删除旧镜像
 	Registry := conf.Config.Registry
