@@ -75,8 +75,9 @@ func Prepare() {
 
 		// ImageTag := []string{"redis","latest"}
 		ImageTag := strings.Split((tmp[len(tmp)-1]), ":")
+
 		//Tag := "latest"
-		Tag := ImageTag[0]
+		Tag := ImageTag[1]
 
 		//Repository :="reg.17mei.top/redis"
 		Repository := Registry + "/" + ImageTag[0] + Tag
