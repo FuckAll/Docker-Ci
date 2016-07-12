@@ -80,7 +80,7 @@ func Prepare() {
 		Tag := ImageTag[1]
 
 		//Repository :="reg.17mei.top/redis"
-		Repository := Registry + "/" + ImageTag[0] + Tag
+		Repository := Registry + "/" + ImageTag[0]
 
 		if err := api.PullImage(Repository, Registry, Tag); err != nil {
 			log.Tfatal(conf.Tracer, err)
