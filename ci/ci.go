@@ -16,6 +16,7 @@ import (
 	"github.com/FuckAll/Docker-Ci/infrastructure"
 	"github.com/FuckAll/Docker-Ci/test"
 	"github.com/wothing/log"
+	"strings"
 	"time"
 )
 
@@ -48,30 +49,45 @@ func CiRun(step string, tag string, args ...string) {
 	}
 }
 
-// Prepare Used To Create Docekr Environment
+// Prepare Used To Create Docker Environment
 func Prepare() {
 	// Create NetWork Test For Docker Test
-	// bridge := conf.Config.Bridge
-	// if fi := api.NetworkExist(bridge); !fi {
-	// 	_, err := api.CreateNetwork(bridge)
-	// 	if err != nil {
-	// 		log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
-	// 	}
-	// } else {
-	// 	log.Tinfo("Prepare ready!!!")
-	// }
-	// Prepare Images
-	// for _, infra := range conf.Config.Infrastructure {
-	// 	tmp := infra.(map[string]interface{})
-	// 	image := tmp["image"].(string)
-	// 	api.PullImage("reg.17mei.top", "redis", "laste")
-
-	// 	// fmt.Println(infra.(map[string]interface{}))
-	// }
-	if err := api.PullImage("reg.17mei.top", "redis", "laste"); err != nil {
-		log.Tfatal(conf.Tracer, err)
-
+	log.Tinfo("Create NetWork Bridge Test")
+	bridge := conf.Config.Bridge
+	if fi := api.NetworkExist(bridge); !fi {
+		_, err := api.CreateNetwork(bridge)
+		if err != nil {
+			log.Tfatal(conf.Tracer, "Prepare Error: %s", err)
+		}
 	}
+	log.Tinfo("Create Network Bridge Complete!")
+	// Prepare Images
+	log.Tinfo("Check Infrastructure Images")
+	for _, infra := range conf.Config.Infrastructure {
+		// image example : reg.17mei.top/redis:latest
+		image := (infra.(map[string]interface{})["image"].(string))
+
+		//tmp := []string{"reg.17mei.top","redis:latest"}
+		tmp := strings.Split(image, "/")
+
+		// Registry := "reg.17mei.top"
+		Registry := tmp[0]
+
+		// Tag := []string{"redis","latest"}
+		ImageTag := strings.Split((tmp[len(tmp)-1]), ":")
+
+		//Repository :="reg.17mei.top/redis"
+		Repository := Registry + "/" + ImageTag[1]
+
+		//Tag := "latest"
+		Tag := ImageTag[0]
+
+		if err := api.PullImage(Repository, Registry, Tag); err != nil {
+			log.Tfatal(conf.Tracer, err)
+		}
+		log.Tinfo("Check Infrastructure Complete!")
+	}
+
 }
 
 // CiBuildApp used to Build App no test
