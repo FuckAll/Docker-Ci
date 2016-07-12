@@ -64,7 +64,7 @@ func Prepare() {
 	// Prepare Images
 	log.Tinfo("Check Infrastructure Images")
 	for _, infra := range conf.Config.Infrastructure {
-		// image example : reg.17mei.top/redis:latest
+		// image =: reg.17mei.top/redis:latest
 		image := (infra.(map[string]interface{})["image"].(string))
 
 		//tmp := []string{"reg.17mei.top","redis:latest"}
@@ -79,8 +79,16 @@ func Prepare() {
 		//Tag := "latest"
 		Tag := ImageTag[1]
 
-		//Repository :="reg.17mei.top/redis"
-		Repository := Registry + "/" + ImageTag[0]
+		//Repository :="reg.17mei.top"
+		Repository := Registry
+
+		if len(tmp) > 2 {
+			for _, one := range tmp[1 : len(tmp)-1] {
+				Repository = Repository + "/" + one
+
+			}
+
+		}
 
 		if err := api.PullImage(Repository, Registry, Tag); err != nil {
 			log.Tfatal(conf.Tracer, err)
