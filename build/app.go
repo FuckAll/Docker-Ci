@@ -3,7 +3,6 @@ package build
 import (
 	"bytes"
 	"fmt"
-	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
@@ -18,7 +17,6 @@ var GoPath string
 var CurentPath string
 
 func init() {
-	http.Request
 	log.SetFlags(log.LstdFlags | log.Llevel)
 	var err error
 	CurentPath, err = os.Getwd()
