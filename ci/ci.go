@@ -154,7 +154,7 @@ func CiTestAppNoClean() {
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
-	time.Sleep(10 * time.Second)
+	time.Sleep(15 * time.Second)
 
 	//3. 启动业务代码容器
 	err = container.StartApp()
@@ -187,7 +187,7 @@ func CiTestAppClean() {
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartPostgres Error: %s", err)
 	}
-	time.Sleep(10 * time.Second)
+	time.Sleep(15 * time.Second)
 	//3. 启动业务代码容器
 	err = container.StartApp()
 	if err != nil {
