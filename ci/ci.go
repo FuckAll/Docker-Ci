@@ -85,7 +85,6 @@ func Prepare() {
 
 		//Tag := "latest"
 		Tag := ImageTag[1]
-		fmt.Println("good")
 
 		//Repository :="reg.17mei.top"
 		Repository := Registry

@@ -3,6 +3,7 @@ package build
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
@@ -17,6 +18,7 @@ var GoPath string
 var CurentPath string
 
 func init() {
+	http.Request
 	log.SetFlags(log.LstdFlags | log.Llevel)
 	var err error
 	CurentPath, err = os.Getwd()
@@ -38,6 +40,7 @@ func init() {
 
 }
 
+// CMD Used To Do Some Shell Command
 func CMD(order string) (string, error) {
 	log.Tinfof(conf.Tracer, "CMD: %s", order)
 	cmd := exec.Command("bash")
@@ -61,35 +64,52 @@ func CMD(order string) (string, error) {
 	return stdout.String(), nil
 }
 
-//BuildApp build app
-//GoRoutine To Build App, 火力全开
+// BuildApp Used To Build App
+// GoRoutine To Build App,
+// Create 3 Builder To Build App Use Goroutine
 func BuildApp() (string, error) {
 	// 开启最大的CPU并行。计时开始
 	t1 := time.Now().UnixNano()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	services := conf.Config.Services
 
-	//创建services 长度的缓冲信道
+	// 创建信道，长度为App个数,并且把信道中填充
 	apps := make(chan string, len(services))
+	for _, s := range services {
+		apps <- s.BuildCommand
 
-	f := func(name, cmd string) {
+	}
+
+	// 关闭channel,只读不可写
+	close(apps)
+
+	// 开启Builder的数量,默认为3
+	builderNum := 3
+	complete := make(chan bool, builderNum)
+	for i := 0; i < builderNum; i++ {
+		go builder(apps, complete)
+
+	}
+	for i := 0; i < builderNum; i++ {
+		<-complete
+	}
+
+	//创建goroutine
+	t2 := time.Now().UnixNano()
+	time := string(t2 - t1)
+	return time, nil
+}
+
+// builder Used By BuildApp
+func builder(apps chan string, complete chan bool) {
+	for cmd := range apps {
 		_, err := CMD(cmd)
 		if err != nil {
 			log.Tfatalf(conf.Tracer, "Run %s Error", cmd)
 		}
-		apps <- name
+		if len(apps) <= 0 {
+			complete <- true
+		}
 	}
 
-	//创建goroutine
-	for _, s := range services {
-		time.Sleep(time.Millisecond * 3000)
-		go f(s.Name, s.BuildCommand)
-	}
-
-	for i := 0; i < len(services); i++ {
-		<-apps
-	}
-	t2 := time.Now().UnixNano()
-	time := string(t2 - t1)
-	return time, nil
 }
