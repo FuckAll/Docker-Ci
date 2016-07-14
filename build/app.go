@@ -82,7 +82,7 @@ func BuildApp() (string, error) {
 	close(apps)
 
 	// 开启Builder的数量,默认为3
-	builderNum := 3
+	builderNum := conf.Config.BuilderNum
 	complete := make(chan bool, builderNum)
 	for i := 0; i < builderNum; i++ {
 		go builder(apps, complete)

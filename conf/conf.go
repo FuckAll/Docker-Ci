@@ -30,6 +30,7 @@ type DockerCi struct {
 	InitCommand    string // Init Command
 	TestCommand    string // Test Command
 	Registry       string
+	BuilderNum     int                    // Builder Number
 	Infrastructure map[string]interface{} // Base Infrastructure for example: pgsql redis consul
 	Services       []Service
 }
@@ -70,6 +71,7 @@ func init() {
 	Config.InitCommand = cm["InitCommand"].(string)
 	Config.TestCommand = cm["TestCommand"].(string)
 	Config.Registry = cm["Registry"].(string)
+	Config.BuilderNum = cm["BuilderNum"].(int)
 	Config.Infrastructure = cm["Infrastructure"].(map[string]interface{})
 
 	services := cm["Services"].([]interface{})
