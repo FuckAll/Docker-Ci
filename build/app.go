@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"time"
 
 	"github.com/FuckAll/Docker-Ci/conf"
@@ -60,19 +61,30 @@ func CMD(order string) (string, error) {
 	return stdout.String(), nil
 }
 
+//BuildApp build app
+//GoRoutine To Build App
 func BuildApp() (string, error) {
+	// 开启最大的CPU并行。计时开始
 	t1 := time.Now().UnixNano()
-	services := conf.Config.Services
+	log.Info(runtime.NumCPU())
+	runtime.GOMAXPROCS(runtime.NumCPU())
 
+	services := conf.Config.Services
+	apps := make(chan string, len(services))
 	for _, s := range services {
-		_, err := CMD(s.BuildCommand)
-		if err != nil {
-			log.Tfatalf(conf.Tracer, "Run %s Error", s.BuildCommand)
-			return "", err
-		}
+		go func() {
+			_, err := CMD(s.BuildCommand)
+			if err != nil {
+				log.Tfatalf(conf.Tracer, "Run %s Error", s.BuildCommand)
+			}
+			apps <- s.Name
+		}()
+
+	}
+	for i := 0; i < len(services); i++ {
+		<-apps
 	}
 	t2 := time.Now().UnixNano()
 	time := string(t2 - t1)
 	return time, nil
-
 }
