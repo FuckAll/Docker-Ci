@@ -53,7 +53,7 @@ func CiRun(step string, tag string, args ...string) {
 // Prepare Used To Create Docker Environment
 func prepare() {
 	// Create NetWork Test For Docker Test
-	log.Tinfo("Create NetWork Bridge Test")
+	log.Tinfo(conf.Tracer, "Create NetWork Bridge Test")
 	bridge := conf.Config.Bridge
 	if fi := api.NetworkExist(bridge); !fi {
 		_, err := api.CreateNetwork(bridge)
