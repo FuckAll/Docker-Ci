@@ -70,7 +70,8 @@ func BuildApp() (string, error) {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	services := conf.Config.Services
-	apps := make(chan string, len(services))
+	// apps := make(chan string, len(services))
+	apps := make(chan string, runtime.NumCPU())
 	f := func(name, cmd string) {
 		_, err := CMD(cmd)
 		if err != nil {
