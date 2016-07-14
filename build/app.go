@@ -66,7 +66,6 @@ func CMD(order string) (string, error) {
 func BuildApp() (string, error) {
 	// 开启最大的CPU并行。计时开始
 	t1 := time.Now().UnixNano()
-	log.Info(runtime.NumCPU())
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	services := conf.Config.Services

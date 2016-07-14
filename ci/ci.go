@@ -68,6 +68,11 @@ func prepare() {
 		// image =: reg.17mei.top/redis:latest
 		image := (infra.(map[string]interface{})["image"].(string))
 
+		// 判断镜像是否存在，如果存在就不重新拉取
+		if exist := api.ExistImage(image); exist {
+			continue
+		}
+
 		//tmp := []string{"reg.17mei.top","redis:latest"}
 		tmp := strings.Split(image, "/")
 
