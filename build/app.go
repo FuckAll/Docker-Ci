@@ -62,7 +62,7 @@ func CMD(order string) (string, error) {
 }
 
 //BuildApp build app
-//GoRoutine To Build App
+//GoRoutine To Build App, 火力全开
 func BuildApp() (string, error) {
 	// 开启最大的CPU并行。计时开始
 	t1 := time.Now().UnixNano()
@@ -71,15 +71,15 @@ func BuildApp() (string, error) {
 
 	services := conf.Config.Services
 	apps := make(chan string, len(services))
+	f := func(name, cmd string) {
+		_, err := CMD(cmd)
+		if err != nil {
+			log.Tfatalf(conf.Tracer, "Run %s Error", cmd)
+		}
+		apps <- name
+	}
 	for _, s := range services {
-		go func() {
-			_, err := CMD(s.BuildCommand)
-			if err != nil {
-				log.Tfatalf(conf.Tracer, "Run %s Error", s.BuildCommand)
-			}
-			apps <- s.Name
-		}()
-
+		go f(s.Name, s.BuildCommand)
 	}
 	for i := 0; i < len(services); i++ {
 		<-apps
