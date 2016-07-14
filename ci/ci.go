@@ -22,17 +22,18 @@ import (
 
 // CiRun Run Ci Begin
 func CiRun(step string, tag string, args ...string) {
-	Prepare()
 	switch step {
 	case "OnlyBuild":
 		log.Tinfo(conf.Tracer, "OnlyBuild Start!")
 		CiBuildApp(args...)
 		log.Tinfo(conf.Tracer, "OnlyBuild Complate!")
 	case "TestClean":
+		prepare()
 		log.Tinfo(conf.Tracer, "TestClean Start!")
 		CiTestAppClean()
 		log.Tinfo(conf.Tracer, "TestClean Complate!")
 	case "TestNoClean":
+		prepare()
 		log.Tinfo(conf.Tracer, "TestNoClean Start!")
 		CiTestAppNoClean()
 		log.Tinfo(conf.Tracer, "TestNoClean Complate!")
@@ -50,7 +51,7 @@ func CiRun(step string, tag string, args ...string) {
 }
 
 // Prepare Used To Create Docker Environment
-func Prepare() {
+func prepare() {
 	// Create NetWork Test For Docker Test
 	log.Tinfo("Create NetWork Bridge Test")
 	bridge := conf.Config.Bridge

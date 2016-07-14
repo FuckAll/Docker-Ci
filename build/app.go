@@ -70,13 +70,13 @@ func BuildApp() (string, error) {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	services := conf.Config.Services
-	// apps := make(chan string, len(services))
-	apps := make(chan string, runtime.NumCPU())
+	apps := make(chan string, len(services))
 	f := func(name, cmd string) {
 		_, err := CMD(cmd)
 		if err != nil {
 			log.Tfatalf(conf.Tracer, "Run %s Error", cmd)
 		}
+		log.Info(name)
 		apps <- name
 	}
 	for _, s := range services {
