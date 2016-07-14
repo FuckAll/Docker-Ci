@@ -28,12 +28,12 @@ func CiRun(step string, tag string, args ...string) {
 		CiBuildApp(args...)
 		log.Tinfo(conf.Tracer, "OnlyBuild Complate!")
 	case "TestClean":
-		prepare()
+		Prepare()
 		log.Tinfo(conf.Tracer, "TestClean Start!")
 		CiTestAppClean()
 		log.Tinfo(conf.Tracer, "TestClean Complate!")
 	case "TestNoClean":
-		prepare()
+		Prepare()
 		log.Tinfo(conf.Tracer, "TestNoClean Start!")
 		CiTestAppNoClean()
 		log.Tinfo(conf.Tracer, "TestNoClean Complate!")
@@ -51,7 +51,7 @@ func CiRun(step string, tag string, args ...string) {
 }
 
 // Prepare Used To Create Docker Environment
-func prepare() {
+func Prepare() {
 	// Create NetWork Test For Docker Test
 	log.Tinfo(conf.Tracer, "Create NetWork Bridge Test")
 	bridge := conf.Config.Bridge
@@ -70,6 +70,7 @@ func prepare() {
 
 		// 判断镜像是否存在，如果存在就不重新拉取
 		if exist := api.ExistImage(image); exist {
+			log.Tinfof(conf.Tracer, "Check Infrastructure %s Complete! \n", image)
 			continue
 		}
 
@@ -84,6 +85,7 @@ func prepare() {
 
 		//Tag := "latest"
 		Tag := ImageTag[1]
+		fmt.Println("good")
 
 		//Repository :="reg.17mei.top"
 		Repository := Registry
