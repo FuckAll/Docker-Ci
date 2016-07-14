@@ -67,20 +67,25 @@ func BuildApp() (string, error) {
 	// 开启最大的CPU并行。计时开始
 	t1 := time.Now().UnixNano()
 	runtime.GOMAXPROCS(runtime.NumCPU())
-
 	services := conf.Config.Services
+
+	//创建services 长度的缓冲信道
 	apps := make(chan string, len(services))
+
 	f := func(name, cmd string) {
 		_, err := CMD(cmd)
 		if err != nil {
 			log.Tfatalf(conf.Tracer, "Run %s Error", cmd)
 		}
-		log.Info(name)
 		apps <- name
 	}
+
+	//创建goroutine
 	for _, s := range services {
+		time.Sleep(time.Millisecond * 3000)
 		go f(s.Name, s.BuildCommand)
 	}
+
 	for i := 0; i < len(services); i++ {
 		<-apps
 	}
