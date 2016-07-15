@@ -9,8 +9,28 @@ import (
 	"github.com/wothing/log"
 )
 
+// BuildImage Used To Build Image From DockerFile
+// BuildImage Goroutine
 func BuildImage() {
+
 	services := conf.Config.Services
+	images := make(chan string, len(services))
+
+	// 开启Builder
+	builderNum := (int)(conf.Config.BuilderNum)
+	complete := make(chan bool, builderNum)
+	for _, s := range services {
+		images <- s.Name
+	}
+	close(images)
+	for i := 0; i < builderNum; i++ {
+		go imageBuilder(images, complete)
+
+	}
+	for i := 0; i < builderNum; i++ {
+		<-complete
+
+	}
 	for _, service := range services {
 		imageName := conf.Tracer + "-" + service.Name
 		filename := service.Name + "-DockerFile"
@@ -23,6 +43,23 @@ func BuildImage() {
 
 }
 
+func imageBuilder(images chan string, complete chan bool) {
+	for image := range images {
+		imageName := conf.Tracer + "-" + image
+		filename := image + "-DockerFile"
+		err := api.BuildImage(imageName, filename, GoPath, false, false, false)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if len(images) <= 0 {
+			complete <- true
+		}
+
+	}
+
+}
+
+// CreateDockerFile Used To Create Dockerfile
 func CreateDockerFile() {
 	if err := os.Chdir(GoPath); err != nil {
 		log.Tfatalf(conf.Tracer, "cd %s Error ", GoPath)

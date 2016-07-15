@@ -64,7 +64,7 @@ func CMD(order string) (string, error) {
 
 // BuildApp Used To Build App
 // GoRoutine To Build App,
-// Create 3 Builder To Build App Use Goroutine
+// Create default Builder To Build App Use Goroutine
 func BuildApp() (string, error) {
 	// 开启最大的CPU并行。计时开始
 	t1 := time.Now().UnixNano()
