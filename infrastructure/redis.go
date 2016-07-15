@@ -62,10 +62,10 @@ func CreateRedisContainer() error {
 	passwd := "REDIS_PASS=" + Redis.Passwd
 	redisContainerId, err := api.CreateContainer(name, Redis.Image, []string{"app:/test"}, passwd)
 	if err != nil {
-		log.Terror("CreateRedisContainer Error:", err)
+		log.Terror(conf.Tracer, "CreateRedisContainer Error:", err)
 		return err
 	}
-	log.Info("CreateRedisContainer Complate!")
+	log.Tinfo(conf.Tracer, "CreateRedisContainer Complate!")
 	RedisContainerId = redisContainerId
 	return nil
 }
@@ -73,22 +73,22 @@ func CreateRedisContainer() error {
 func StartRedisContainer() error {
 	err := api.StartContainer(RedisContainerId, conf.Config.Bridge)
 	if err != nil {
-		log.Terror("StartRedis Error:", err)
+		log.Terror(conf.Tracer, "StartRedis Error:", err)
 		return err
 
 	}
-	log.Info("StartRedisContainer Complate!")
+	log.Tinfo(conf.Tracer, "StartRedisContainer Complate!")
 	return nil
 }
 
 func StopRedisContainer() error {
 	err := api.StopContainer(RedisContainerId, 20)
 	if err != nil {
-		log.Terror("StopRedisContainer Error:", err)
+		log.Terror(conf.Tracer, "StopRedisContainer Error:", err)
 		return err
 
 	}
-	log.Info("StopRedisContainer Complate!")
+	log.Tinfo(conf.Tracer, "StopRedisContainer Complate!")
 	return nil
 
 }
@@ -96,9 +96,9 @@ func StopRedisContainer() error {
 func RemoveRedisContainer() error {
 	err := api.RemoveContainer(RedisContainerId, false)
 	if err != nil {
-		log.Terror("RemoveRedis Error:", err)
+		log.Terror(conf.Tracer, "RemoveRedis Error:", err)
 		return err
 	}
-	log.Info("RemoveRedisContainer Complate!")
+	log.Tinfo(conf.Tracer, "RemoveRedisContainer Complate!")
 	return nil
 }
