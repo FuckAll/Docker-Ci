@@ -54,7 +54,7 @@ func imageBuilder(images chan string, complete chan bool) {
 		if len(images) <= 0 {
 			complete <- true
 		}
-
+		log.Tinfof(conf.Tracer, "Create %s DockerFile Complete!!!", image)
 	}
 
 }
