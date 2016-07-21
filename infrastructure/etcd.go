@@ -8,11 +8,12 @@
 package infrastructure
 
 import (
+	"time"
+
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/coreos/go-etcd/etcd"
 	"github.com/wothing/log"
-	"time"
 )
 
 // Etcd used
@@ -123,7 +124,8 @@ func etcdInit() error {
 	client := etcd.NewClient(machines)
 	pgsqlHost := conf.Tracer + "-pgsql"
 	redisHost := conf.Tracer + "-redis"
-	keyValue := map[string]string{"/17mei/pgsql/host": pgsqlHost, "/17mei/pgsql/port": "5432", "/17mei/pgsql/name": Postgres.Dname, "/17mei/pgsql/user": Postgres.Duser, "/17mei/pgsql/password": Postgres.Passwd, "/17mei/redis/host": redisHost, "/17mei/redis/port": "6379", "/17mei/redis/password": Redis.Passwd, "/17mei/mediastore/mode": "test", "/17mei/payment/mode": "test", "/17mei/push/apns": "false"}
+	nsqdHost := conf.Tracer + "-nsqd"
+	keyValue := map[string]string{"/17mei/pgsql/host": pgsqlHost, "/17mei/pgsql/port": "5432", "/17mei/pgsql/name": Postgres.Dname, "/17mei/pgsql/user": Postgres.Duser, "/17mei/pgsql/password": Postgres.Passwd, "/17mei/redis/host": redisHost, "/17mei/redis/port": "6379", "/17mei/redis/password": Redis.Passwd, "/17mei/mediastore/mode": "test", "/17mei/payment/mode": "test", "/17mei/push/apns": "false", "/17mei/nsq/host": nsqdHost, "/17mei/nsq/port": "4150"}
 	for k, v := range keyValue {
 		if _, err := client.Set(k, v, 0); err != nil {
 			return err
