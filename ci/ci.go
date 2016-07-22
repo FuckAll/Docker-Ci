@@ -217,6 +217,10 @@ func CiTestAppClean() {
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci CleanContainer Error: %s", err)
 	}
+	err = infrastructure.StopNsqd()
+	if err != nil {
+		log.Tfatalf(conf.Tracer, "StopNsqdContainer Error:%s", err)
+	}
 	err = infrastructure.StopPostgres()
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "StopPostgresContainer Error:%s", err)
