@@ -152,7 +152,7 @@ func CiTestAppNoClean() {
 	if err != nil {
 		log.Tfatal(conf.Tracer, "Ci StartNsqd Error: %s", err)
 	}
-	err := infrastructure.StartEtcd()
+	err = infrastructure.StartEtcd()
 	if err != nil {
 		log.Tfatal(conf.Tracer, "Ci StartEtcd Error: %s", err)
 	}
@@ -184,7 +184,7 @@ func CiTestAppClean() {
 	if err != nil {
 		log.Tfatal(conf.Tracer, "Ci StartNsqd Error: %s", err)
 	}
-	err := infrastructure.StartEtcd()
+	err = infrastructure.StartEtcd()
 	if err != nil {
 		log.Tfatal(conf.Tracer, "Ci StartEtcd Error: %s", err)
 	}
