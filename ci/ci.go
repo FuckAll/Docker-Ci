@@ -9,6 +9,9 @@ package ci
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/build"
 	"github.com/FuckAll/Docker-Ci/conf"
@@ -16,8 +19,6 @@ import (
 	"github.com/FuckAll/Docker-Ci/infrastructure"
 	"github.com/FuckAll/Docker-Ci/test"
 	"github.com/wothing/log"
-	"strings"
-	"time"
 )
 
 // CiRun Run Ci Begin
@@ -147,12 +148,15 @@ func CiTestAppNoClean() {
 	//if err != nil {
 	//log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
 	//	}
+	err := infrastructure.StartNsqd()
+	if err != nil {
+		log.Tfatal(conf.Tracer, "Ci StartNsqd Error: %s", err)
+	}
 	err := infrastructure.StartEtcd()
 	if err != nil {
 		log.Tfatal(conf.Tracer, "Ci StartEtcd Error: %s", err)
 	}
 	err = infrastructure.StartRedis()
-
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartRedis Error: %s", err)
 	}
@@ -176,6 +180,10 @@ func CiTestAppClean() {
 	// 1. 构建镜像
 	CiBuildApp()
 	//2. 启动基础服务，例如：pgsql redis etcd
+	err := infrastructure.StartNsqd()
+	if err != nil {
+		log.Tfatal(conf.Tracer, "Ci StartNsqd Error: %s", err)
+	}
 	err := infrastructure.StartEtcd()
 	if err != nil {
 		log.Tfatal(conf.Tracer, "Ci StartEtcd Error: %s", err)
@@ -185,7 +193,6 @@ func CiTestAppClean() {
 	//log.Tfatalf(conf.Tracer, "Ci StartConsul Error: %s", err)
 	//}
 	err = infrastructure.StartRedis()
-
 	if err != nil {
 		log.Tfatalf(conf.Tracer, "Ci StartRedis Error: %s", err)
 	}

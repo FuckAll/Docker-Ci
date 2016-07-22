@@ -8,8 +8,6 @@
 package infrastructure
 
 import (
-	"time"
-
 	"github.com/FuckAll/Docker-Ci/api"
 	"github.com/FuckAll/Docker-Ci/conf"
 	"github.com/wothing/log"
@@ -46,7 +44,7 @@ func StartNsqd() error {
 	if err != nil {
 		return err
 	}
-	time.Sleep(5 * time.Second)
+
 	return nil
 }
 
