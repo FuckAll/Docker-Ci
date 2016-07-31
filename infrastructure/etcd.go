@@ -125,7 +125,7 @@ func etcdInit() error {
 	pgsqlHost := conf.Tracer + "-pgsql"
 	redisHost := conf.Tracer + "-redis"
 	nsqdHost := conf.Tracer + "-nsqd"
-	keyValue := map[string]string{"/17mei/pgsql/host": pgsqlHost, "/17mei/pgsql/port": "5432", "/17mei/pgsql/name": Postgres.Dname, "/17mei/pgsql/user": Postgres.Duser, "/17mei/pgsql/password": Postgres.Passwd, "/17mei/redis/host": redisHost, "/17mei/redis/port": "6379", "/17mei/redis/password": Redis.Passwd, "/17mei/mediastore/mode": "test", "/17mei/payment/mode": "test", "/17mei/push/apns": "false", "/17mei/nsq/host": nsqdHost, "/17mei/nsq/port": "4150"}
+	keyValue := map[string]string{"/17mei/pgsql/host": pgsqlHost, "/17mei/pgsql/port": "5432", "/17mei/pgsql/name": Postgres.Dname, "/17mei/pgsql/user": Postgres.Duser, "/17mei/pgsql/password": Postgres.Passwd, "/17mei/redis/host": redisHost, "/17mei/redis/port": "6379", "/17mei/redis/password": Redis.Passwd, "/17mei/mediastore/mode": "test", "/17mei/payment/mode": "test", "/17mei/push/apns": "false", "/17mei/nsql/host": nsqdHost, "/17mei/nsql/port": "4161", "/17mei/nsqd/host": nsqdHost, "/17mei/nsqd/port": "4150", "/17mei/wechat/appid": "wxc3a713d594283b00", "/17mei/wechat/appsecret": "66edd83a09789b1fb88535e3f14ae94c"}
 	for k, v := range keyValue {
 		if _, err := client.Set(k, v, 0); err != nil {
 			return err
