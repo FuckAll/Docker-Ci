@@ -1,6 +1,5 @@
 workspace:
-  base: /Users/
-  path: KongFu/BaseEnv/src/github.com/FuckAll/Docker-Ci
+  base: /Users/KongFu/BaseEnv/
 
 build:
     image: daocloud.io/izgnod/dev-golang:1.6
