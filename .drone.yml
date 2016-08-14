@@ -1,8 +1,8 @@
 workspace:
-  base: /Users/KongFu/BaseEnv/
+  base: /Users/KongFu/BaseEnv/src/github.com/FuckAll/Docker-Ci
 
 build:
     image: daocloud.io/izgnod/dev-golang:1.6
     commands:
-      - go get
-      - go build
+      - /usr/local/go/bin/go get
+      - /usr/local/go/bin/go build
