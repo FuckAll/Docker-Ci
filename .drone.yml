@@ -1,0 +1,5 @@
+build:
+    image:daocloud.io/izgnod/dev-golang:1.6
+    commands:
+      - go get
+      - go build
