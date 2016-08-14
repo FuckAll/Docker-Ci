@@ -1,7 +1,4 @@
 
-workspace:
-  base: /go
-
 build:
     image: daocloud.io/izgnod/dev-golang:1.6
     environment:
