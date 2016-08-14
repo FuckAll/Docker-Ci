@@ -3,7 +3,7 @@ workspace:
   path: KongFu/BaseEnv/src/github.com/FuckAll/Docker-Ci
 
 build:
-    image: golang
+    image: index.tenxcloud.com/izgnod/golang
     commands:
       - go get
       - go build
