@@ -6,8 +6,8 @@ workspace:
 build:
     image: golang:1.6.3
     environment:
-      - GOPATH=/Users/KongFu/BaseEnv/
-      - GOROOT=/usr/local/go
+      - http_proxy=http://172.19.0.2:8118
+      - https_proxy=http://172.19.0.2:8118
     commands:
       - /usr/local/go/bin/go get
       - /usr/local/go/bin/go build
