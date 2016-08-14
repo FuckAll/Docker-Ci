@@ -1,10 +1,13 @@
 
+workspace:
+  path: /drone/src/github.com/FuckAll/Docker-Ci
+  base: /drone
+
 build:
     image: daocloud.io/izgnod/dev-golang:1.6
     environment:
       - GOPATH=/Users/KongFu/BaseEnv/
       - GOROOT=/usr/local/go
     commands:
-      - cd /Users/KongFu/BaseEnv/
       - /usr/local/go/bin/go env
       - /usr/local/go/bin/go build
