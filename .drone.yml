@@ -5,4 +5,5 @@ build:
       - GOPATH=/Users/KongFu/BaseEnv/
       - GOROOT=/usr/local/go
     commands:
+      - /usr/local/go/bin/go env
       - /usr/local/go/bin/go build
