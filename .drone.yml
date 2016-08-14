@@ -3,5 +3,8 @@ workspace:
 
 build:
     image: daocloud.io/izgnod/dev-golang:1.6
+    environment:
+      - GOPATH="/Users/KongFu/BaseEnv/"
+      - GOROOT="/usr/local/go"
     commands:
       - /usr/local/go/bin/go build
