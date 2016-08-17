@@ -13,10 +13,14 @@ func CreateContainer(Name, Image string, Volumes []string, Env ...string) (strin
 	hostconfigs := docker.HostConfig{
 		Binds: Volumes,
 	}
+	networkingConfig := docker.NetworkingConfig{
+		EndpointsConfig: map[string]*docker.EndpointConfig{"test":nil},
+	}
 	opts := docker.CreateContainerOptions{
 		Name:       Name,
 		Config:     &configs,
 		HostConfig: &hostconfigs,
+		NetworkingConfig: &networkingConfig,
 	}
 	container, err := client.CreateContainer(opts)
 	if err != nil {
