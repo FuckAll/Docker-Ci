@@ -2,7 +2,6 @@
 
 
 ## 获取变量个数
-
 if [ $# -lt 1 ]; then
     echo "error.. need tid"
     exit 1
