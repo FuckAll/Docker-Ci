@@ -16,4 +16,4 @@ docker run -it -d --net=test -v /var/run/docker.sock:/var/run/docker.sock -v /ro
 
 
 
-docker run -d -ti --net=test --restart=always --name DockerMother1.7 -v ~/.ssh/:/root/.ssh/ -v /var/run/docker.sock:/var/run/docker.sock daocloud.io/izgnod/dev-golang:1.1 zsh
+docker run -d -ti --net=test --restart=always --name DockerMother1.7WebHook -p 4000:4000 -v ~/.ssh/:/root/.ssh/ -v /var/run/docker.sock:/var/run/docker.sock index.tenxcloud.com/izgnod/golang1.7-ci:1.1 bash
